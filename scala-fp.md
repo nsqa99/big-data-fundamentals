@@ -38,14 +38,19 @@ In Scala, we treat a function as a value so function can be:
 ### NAMED FUNCTION
 ```
 val sum = (a: Int, b: Int) => a + b
-val anonfun2 = new Function2[Int, Int] {
-     def apply(x: Int, y: Int): Int = x + y
-   }
+```
+```
+val sumFunc2 = new Function2[Int, Int] {
+    def apply(x: Int, y: Int): Int = x + y
+}
 ```
 
 There is some “magic” behind-the-scenes that Scala does to allow the assignment of a function to a variable. All functions in Scala are special objects of type Function1 or Function2 or FunctionN, where N is the number of input arguments to the function.
 
 The compiler will box the function code we provide into the appropriate object automatically. This object contains a method apply() that can be called to execute our function.
+
+if you write a symbol name followed by an argument list in parentheses (or just a pair of parentheses for an empty argument list), Scala converts that into a call to the apply method for the named object.
+
 
 ### BY-NAME PARAMETER
 ```
@@ -58,8 +63,36 @@ The compiler will box the function code we provide into the appropriate object a
   println(multi(1, 3 / 0)) // java.lang.ArithmeticException: / by zero
 ```
 
-### PARTIALLY FUNCTION
-
-### FUNCTION CURRING
-
 ### HIGH ORDER FUNCTION
+A higher-order function has at least one of the following properties:
+- It takes one or more functions as parameters
+- It returns a function
+
+```
+    val array = Array(1,2,3,4,5)
+    println(array.map(f => f * 2).mkString("Array(", ", ", ")")) // Array(2, 4, 6, 8, 10)
+
+    val calculate1 = (x: Int, y: Int, operator: (Int, Int) => Int) => operator(x, y)
+    val minus = (x: Int, y: Int) => x - y
+    val plus = (x: Int, y: Int) => x + y
+    println(calculate1(1, 2, minus)) // -1
+    println(calculate1(1, 2, plus)) // 3
+```
+
+### FUNCTION CURRYING
+
+```
+    val getOperator: String => (Int, Int) => Int = (s: String) => (x: Int, y: Int) => {
+        s match {
+          case "+" => x + y
+          case "-" => x - y
+        }
+    }
+    val plus = getOperator("+")
+    println(plus(1, 2)) // 3
+```
+
+### PATTERN MATCHING
+
+
+### IMPLICIT
