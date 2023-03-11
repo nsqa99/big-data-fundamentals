@@ -648,7 +648,7 @@ Characteristics:
   + Has improved `toString` implementation
 
 - Primarily used in two places:
-  + When creating enumarations
+  + When creating enumerations
     ```
     sealed trait Animal
     case object Cat extends Animal

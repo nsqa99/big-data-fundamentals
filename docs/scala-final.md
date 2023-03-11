@@ -275,15 +275,20 @@ m --= List(1, 2) // => Map(3 -> "Ba", 4 -> "Bon")
 ```
 
 ## Classes
+### Declaration
+```
+class Foo
+```
 
+### Fields
 ```
 class Foo(bar: Int) {
   def getBar(): Unit = println(bar)
 }
 ```
-- Instance variables have default **private** access modifier.
+* Instance variables have default **private** access modifier.
 
-- Declare variables with `val` or `var` to make them `public`.
+* Declare variables with `val` or `var` to make them `public`.
   ```
   class Foo(val bar: Int) {
     def getBar(): Unit = println(bar)
@@ -294,8 +299,7 @@ class Foo(bar: Int) {
   foo.bar -> 1
   ```
 
-### Constructors
-* Constructor fields visibility:
+* Fields visibility:
     * If a field is declared as a `var`, Scala generates both getter and setter methods for that field.
       ```
       class Animal(var name: String)
@@ -318,9 +322,10 @@ class Foo(bar: Int) {
       a.name = "Tom" // this won't compile
       ```
 
-    * If a field doesn’t have a `var` or `val` modifier, Scala will not generate a getter or setter method for the field.
+    * If a field doesn’t have a `var` or `val` modifier, the field will be compiled to `private[this] field_name`.
+    So, the constructor parameter can only be accessed by the instance itself.
       ```
-      class Animal(name: String)
+      class Animal(name: String) // similar (private[this] name: String)
   
       var a = new Animal("cat")
   
@@ -340,14 +345,15 @@ class Foo(bar: Int) {
       a.name = "Tom" // this won't compile
       ```
 
-* Public constructor:
+### Constructors
+* Public constructor
   ```
   class Animal(name: String, species: String)
 
   var cat = new Animal("Tom", "cat")
   ```
 
-* Private constructor:
+* Private constructor
   ```
   class Animal private (name: String, species: String)
   
@@ -362,13 +368,34 @@ class Foo(bar: Int) {
   ```
   * Cannot extend a class with `private` constructor.
 
-* Protected constructor: similar to private constructors, in that their classes cannot be instantiated using the new keyword, but they can be extended.
+* Protected constructor
+  
+  Similar to private constructors, in that their classes cannot be instantiated using the new keyword, but they can be extended.
   ```
   class Animal protected (name: String, species: String)
 
   class Cat(name: String) extends Animal(name, "cat")
   class Lion(name: String) extends Animal(name, "lion")
   ```
+
+* Default field values
+    ```
+    class Foo(name: String = "unknown")
+  
+    val foo = new Foo()
+    val bar = new Foo("bar")
+    ```
+  * Benefits:
+     * Provide preferred, default values for parameters
+     * Let consumers of the class override values for their own needs
+
+* Named parameters
+    ```
+    class Foo(name: String, address: String)
+  
+    val bar = new Foo(name = "bar", address = "HN")
+    ```
+    * Benefit: Make code more readable
 
 ### Method scopes
 * Object-private scope: method is available only to the current instance of the current object. Other instances of the same class cannot access the method.
@@ -453,6 +480,8 @@ class Cat(name: String) extends Animal(name) {
 }
 ```
 
+**Note:** A Scala class can extend only one class.
+
 #### Inherit multiple classes
 In Scala, this is not achievable with classes. Instead, multiple inheritance is supported via traits.
 ```
@@ -469,11 +498,204 @@ class Cat(name: String) extends Animal(name) with Carnivore { // this will not w
 ```
 
 ## Abstraction
-### Abstract classes
 ### Traits
+#### As Interfaces
+```
+trait Animal {
+  def makeSound(): Unit
+  def speedInKMH(): Double
+}
+
+class Cat extends Animal {
+  override def makeSound(): Unit = {
+    println("Meow~")
+  }
+
+  override def speedInKMH(): Double = 48.02
+}
+```
+
+* Extending multiple traits
+Using `with` keyword
+
+```
+trait Animal {
+  def makeSound(): Unit
+
+  def speedInKMH(): Double
+}
+
+trait Hobby {
+  def favouriteFoods(): Array[String]
+}
+
+trait Specialty {
+  def skills(): Array[String]
+}
+
+class Cat extends Animal with Hobby with Specialty {
+  override def makeSound(): Unit = {
+    println("Meow~")
+  }
+
+  override def speedInKMH(): Double = 48.02
+
+  override def favouriteFoods() = Array("mice", "fish")
+
+  override def skills() = Array("jump over fire ring")
+}
+```
+
+#### As Abstract Classes
+```
+trait Animal {
+  def makeSound(): Unit = {
+    println("Try making a sound...")
+  }
+
+  def speedInKMH(): Double
+}
+
+class Leopard extends Animal {
+  override def speedInKMH(): Double = 58
+}
+```
+
+**Note:** `Trait`s don’t allow constructor parameters
+
+#### Mixing in `interface`-like and `abstract class`-like traits
+```
+trait Animal {
+  def makeSound(): Unit = {
+    println("Try making a sound...")
+  }
+
+  def speedInKMH(): Double
+}
+
+trait Hobby {
+  def favouriteFoods(): Array[String]
+}
+
+class Lion extends Animal with Hobby {
+  override def speedInKMH(): Double = 80
+
+  override def favouriteFoods() = Array("zebra", "deer")
+}
+```
+
+#### Mixing traits in on the fly (at run time)
+
+```
+trait LocalConfiguration {
+  def hostName: String = "http://localhost"
+  def port: String = "8080" 
+  def contextPath: String = "/example"
+}
+
+class App(name: String)
+class Service(baseUrl: String)
+
+val devApp = new App("devApp") with LocalConfiguration
+val url = s"${devApp.hostName}${devApp.port}${devApp.contextPath}"
+val someService = new Service(url)
+```
+
+### Abstract Classes
+Due to the power of Traits, Abstract Classes are only used when:
+  * Creating a base class requires constructor arguments
+  ```
+  abstract class Animal(name: String)
+  
+  class Dog(name: String) extends Animal(name) { ... }
+  ```
+  * Scala code is called from Java code
 
 ## Objects
+* Objects in scala is singleton objects.
 
-## Special keywords
-### `case`
-### `sealed`
+* Objects cannot be extended.
+
+* Methods inside objects are like `static` methods in Java.
+
+  ```
+  object Utils {
+    def sayHello(): Unit = {
+      println("Hello world")
+    }
+  }
+  
+  Utils.sayHello()
+  ```
+
+### Companion objects
+* An object with the same name as a trait or class is called companion object.
+* Companion objects are often used to group together implicits, static methods, factory methods, and other functionality
+that is related to a trait or class but does not belong to any specific instance.
+* A class and its companion object can access to each other’s members, even `private`.
+
+```
+class Person(private val name: String) {
+  def checkinBusStation(): Unit = {
+    Person.busStationCheckCounter += 1
+  }
+}
+
+object Person {
+  private var busStationCheckCounter = 1
+  def sayHelloTo(p: Person): Unit = println(s"Saying hello to $p.name")
+  def printCounter: Int = busStationCheckCounter
+}
+```
+
+## `sealed` keyword
+
+* Used to control extension of classes and traits.
+* Declaring a class or a trait as `sealed` restricts its subclasses location: all subclasses must be declared in the same source file with `sealed` class or trait.
+* **Benefit:** Using `sealed` with pattern matching provides extra safety because the compiler will check that the `cases` of a `match` expression are exhaustive.
+  ```
+  sealed trait Animal
+  case object Cat extends Animal
+  case object Lion extends Animal
+  case object Dog extends Animal
+
+  def whichAnimal(animal: Animal): String = animal match {
+    case Cat => "She's a cat"
+    case Lion => "He's a lion"
+  }
+  ```
+  
+## `case` keyword
+
+### Case Classes
+Case classes are meant to represent classes which are `just data`: all data are immutable and public, without any mutable state 
+or encapsulation; like `structs` in C/C++, `POJOs` in Java.
+
+* Some features
+  * Support pattern matching via `case` keyword
+  * Constructor parameters are public `val` fields by default, so accessor methods are generated for each parameter
+  * An `apply` method is created in the companion object of the class (automatically), so don't have to use `new` keyword to instantiate new instances
+    ```
+    case class Animal(name: String)
+
+    var a = Animal("Tom") // no need to use 'new' keyword
+    ```
+  * A `copy` method is generated in the class
+  * `equals` and `hashCode` methods are generated
+  * A default `toString` method is generated
+
+### Case Objects
+* Similar to regular `objects`, with more features:
+  * Serializable
+  * Has default `hashCode` implementation
+  * Has improved `toString` implementation
+
+* Primarily used in two places:
+  * When creating enumerations
+    ```
+    sealed trait Animal
+    case object Cat extends Animal
+    case object Lion extends Animal
+    case object Dog extends Animal
+    ```
+  * When creating containers for Actor pattern messages
