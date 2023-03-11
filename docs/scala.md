@@ -891,7 +891,7 @@ Implicit paramters are also useful to associate values to types. This is called 
 
 * **Implicit Solution**
   ```
-  trait Parser {
+  trait Parser[T] {
     def parse(s: String): T
   }
 

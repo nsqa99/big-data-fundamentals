@@ -109,7 +109,7 @@ val range1 = 1 to 3
 val range2 = 5 until 7
 
 // using brackets
-for (i <- range; j <- rangeUntil) {
+for (i <- range1; j <- range2) {
     println (s"$i, $j")
 }
 
