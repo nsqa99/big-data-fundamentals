@@ -8,18 +8,19 @@ object Joins {
     import spark.implicits._
 
     val person = Seq(
-      (0, "Bill Chambers", 0, Seq(100)),
-      (1, "Matei Zaharia", 1, Seq(500, 250, 100)),
-      (2, "Michael Armbrust", 1, Seq(250, 100))).toDF("id", "name", "graduate_program", "spark_status")
+      (0, "AnhNSQ", 0, Seq(101)),
+      (1, "Harry Potter", Seq(101, 202)),
+      (2, "Jon Snow", 1, Seq(202, 303)))
+      .toDF("id", "name", "graduate_program", "professor")
     val graduateProgram = Seq(
-      (0, "Masters", "School of Information", "UC Berkeley"),
-      (2, "Masters", "EECS", "UC Berkeley"),
-      (1, "Ph.D.", "EECS", "UC Berkeley")).toDF("id", "degree", "department", "school")
+      (0, "Masters", "C2", "MIT"),
+      (2, "Masters", "C1", "MIT"),
+      (1, "Ph.D.", "A2", "Princeton")).toDF("id", "degree", "department", "school")
 
     val sparkStatus = Seq(
-      (500, "Vice President"),
-      (250, "PMC Member"),
-      (100, "Contributor")).toDF("id", "status")
+      (101, "James Bond"),
+      (202, "Harry Maguire"),
+      (303, "Chi Xen")).toDF("id", "name")
 
     val joinExpression = person.col("graduate_program") === graduateProgram.col("id")
     person.join(graduateProgram, joinExpression).show()
