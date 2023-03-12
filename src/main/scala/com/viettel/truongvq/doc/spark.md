@@ -1,11 +1,23 @@
 # APACHE SPARK
 Apache Spark is an Open source analytical processing engine for large scale powerful distributed data processing and machine learning applications.
 
+The goal of Spark was to create a new framework, optimized for fast iterative processing like machine learning, and interactive data analysis, while retaining the scalability, and fault tolerance of Hadoop MapReduce
+
+Hadoop MapReduce is a programming model for processing big data sets with a parallel, distributed algorithm. Developers can write massively parallelized operators, without having to worry about work distribution, and fault tolerance. However, a challenge to MapReduce is the sequential multi-step process it takes to run a job. With each step, MapReduce reads data from the cluster, performs operations, and writes the results back to HDFS. Because each step requires a disk read, and write, MapReduce jobs are slower due to the latency of disk I/O.
+
+Spark was created to address the limitations to MapReduce, by doing processing in-memory, reducing the number of steps in a job, and by reusing data across multiple parallel operations. With Spark, only one-step is needed where data is read into memory, operations performed, and the results written back—resulting in a much faster execution. Spark also reuses data by using an in-memory cache to greatly speed up machine learning algorithms that repeatedly call a function on the same dataset. Data re-use is accomplished through the creation of DataFrames, an abstraction over Resilient Distributed Dataset (RDD), which is a collection of objects that is cached in memory, and reused in multiple Spark operations. This dramatically lowers the latency making Spark multiple times faster than MapReduce, especially when doing machine learning, and interactive analytics.
+## Spark Component
+![alt](92214447_2562652790634293_8507872163703816192_n.jpg)
+- **Spark Core**: Spark Core provides the execution engine for the Spark platform which is required and used by other components which are built on top of Spark Core as per the requirement. Spark Core uses a very special data structure called the RDD.
+- **Spark SQL**: Spark SQL is Apache Spark's module for working with structured data
+- **Spark Streaming**: Spark Streaming is an extension of the core Spark API that enables scalable, high-throughput, fault-tolerant stream processing of live data streams
+- **Mlib**: MLlib is Apache Spark's scalable machine learning library.
+- **GraphX**: GraphX is Apache Spark's API for graphs and graph-parallel computation.
 ## Spark architecture
 ![alt](spark-architechture.png)
 
 ### Driver process
-The driver process is absolutely essential—it’s the heart of a Spark Application and maintains all relevant information during the lifetime of the application
+The driver process is absolutely essential, maintains all relevant information during the lifetime of the application
 - Maintaining information about the Spark Application
 - Responding to a user’s program or input 
 - Analyzing, distributing, and scheduling work across the executors
@@ -16,38 +28,49 @@ The executors are responsible for actually carrying out the work that the driver
 - Reporting the state of the computation on that executor back to the driver node
 
 ### Cluster manager
-A driver program controls the execution of jobs and stores data in a cache. At the outset, executors register with the drivers. This executor has a number of time slots to run the application concurrently. Executors read and write external data in addition to servicing client requests. A job is executed when the executor has loaded data and they have been removed in the idle state. The executor is dynamically allocated, and it is constantly added and deleted depending on the duration of its use. A driver program monitors executors as they perform users’ tasks. Code is executed in the Java process when an executor executes a user’s task.
 
-Spark employs a cluster manager that keeps track of the resources available.
-The driver process is responsible for executing the driver program’s commands across the
-executors to complete a given task.
+The main task of cluster manager is to provide resources to all applications
 
+## Spark Core
 ### SparkSession
 
 You control your Spark Application through a driver process called the SparkSession. The SparkSession instance is the way Spark executes user-defined manipulations across the cluster
 
 ### DataFrames
-Represents a table of data with rows and columns
-
-### Datasets
-The Dataset API gives users the ability to assign a Java/Scala class to the records within a DataFrame and manipulate it as a collection of typed objects
-
-### Structured Streaming
-
-### Machine Learning and Advanced Analytics
+The most common Structured API. Represents a table of data with rows and columns
 
 ### Partitions
 Spark breaks up the data into chunks called partitions
 
 ### Transformations
+The core data structures are immutable. To “change” a data structure, you need to "transformation" it.
+
 - Narrow dependencies
+  - Each input partition will contribute to only one output partition.
+  - Spark will automatically perform an operation called pipelining, meaning that if we specify multiple filters on DataFrames, they’ll all be performed in-memory
 - Wide dependencies
+  - Input partitions contributing to many output partitions.
+  - You will often hear this referred to as a shuffle whereby Spark will exchange partitions across the cluster. When we perform a shuffle, Spark writes the results to disk
 
+**Lazy Evaluation**: In Spark, instead of modifying the data immediately when you express some operation, you build up a plan of transformations that you would like to apply to your source data. By
+waiting until the last minute to execute the code, Spark compiles this plan from your raw DataFrame
+transformations to a streamlined physical plan that will run as efficiently as possible across the
+cluster
 ### Actions
+Transformations allow us to build up our logical transformation plan. To trigger the computation, we
+run an *action*.
+There are three kinds of actions:
+- Actions to view data in the console
+- Actions to collect data to native objects in the respective language
+- Actions to write to output data sources
 
+Two fundamental sets of APIs:
+- Low-level "unstructed" APIs.
+- Higher-level structured APIs.
 ## Spark Low-level APIs
 
 ### SparkContext
+Main entry point for Spark functionality. A SparkContext represents the connection to a Spark cluster, and can be used to create RDD
 
 ### RDD(Resilient Distributed Datasets)
 Represents an immutable, partitioned collection of records which computes on the different node of the cluster
@@ -217,5 +240,25 @@ aggregateByKey: Same as aggregate but instead of doing it partition by partition
 KVcharacters.aggregateByKey(0)((x,y) => x + y), (x, y) => x.max(y)).collect()
 ```
 ### Joins
+```
+val distinctChars = words.flatMap(word => word.toLowerCase.toSeq).distinct
+val keyedChars = distinctChars.map(c => (c, 0))
+val outputPartitions = 10
+KVcharacters.join(keyedChars).count()
+KVcharacters.join(keyedChars, outputPartitions).count()
+```
+- fullOuterJoin
+- leftOuterJoin
+- rightOuterJoin
+- cartesian
 ### Controlling Partitions
-### Custom Serialization
+- coalesce: Return a new RDD that is reduced into numPartitions partitions
+```
+words.coalesce(1).getNumPartitions 
+```
+- repartition: Return a new RDD that has exactly numPartitions partitions.
+```
+words.repartition(10)
+```
+- Custom Partitioning: This ability is one of the primary reasons you’d want to use RDDs. The goal of custom partitioning is to even out the distribution of your data across the cluster so that you can work around problems like data skew.
+
