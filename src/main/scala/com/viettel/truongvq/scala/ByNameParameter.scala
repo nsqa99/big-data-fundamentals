@@ -1,4 +1,4 @@
-package com.viettel
+package com.viettel.truongvq.scala
 
 object ByNameParameter {
   def multi(a: Int, b: => Int) = {

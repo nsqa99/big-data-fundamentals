@@ -12,6 +12,13 @@ In pure functional programming, only immutable values are used.
 
 - It always returns the same value for the same inputs.
 - It has no side effects. A function with no side effects does nothing other than simply return a result. Any function that interacts with the state of the program can cause side effects.
+  - Modifying a variable
+  - Modifying a data structure in place
+  - Setting a field on an object
+  - Throwing an exception or halting with an error
+  - Printing to the console or reading user input
+  - Reading from or writing to a file
+  - Drawing on the screen
 
 ## METHOD
 
@@ -30,6 +37,18 @@ In Scala, we treat a function as a value so function can be:
 - assigned to a variable
 - passed as an argument to other functions
 - returned as a value from other functions
+
+
+```
+def double(number: Int): Int = {
+  number * 2
+}
+
+val array = Array(1,2,3,4,5)
+println(array.map(f => f * 2).mkString("Array(", ", ", ")")) // Array(2, 4, 6, 8, 10)
+println(array.map(double).mkString("Array(", ", ", ")")) // Array(2, 4, 6, 8, 10)
+```
+
 
 ### ANONYMOUS FUNCTION
 ```
@@ -93,6 +112,5 @@ A higher-order function has at least one of the following properties:
 ```
 
 ### PATTERN MATCHING
-
 
 ### IMPLICIT

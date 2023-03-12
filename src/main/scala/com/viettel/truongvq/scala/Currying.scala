@@ -1,4 +1,4 @@
-package com.viettel
+package com.viettel.truongvq.scala
 
 object Currying {
 
