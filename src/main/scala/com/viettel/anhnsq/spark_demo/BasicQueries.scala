@@ -5,7 +5,7 @@ import org.apache.spark.sql.{DataFrame, Row}
 import org.apache.spark.sql.functions.{asc, col, desc, expr}
 import org.apache.spark.sql.types.{IntegerType, StringType, StructField, StructType}
 
-object SparkStructuredAPIBasicQueries {
+object BasicQueries {
   def main(args: Array[String]): Unit = {
     val spark = getSession
     val schema = StructType(Array(
