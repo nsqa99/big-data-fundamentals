@@ -27,20 +27,13 @@ trait Subject {
   def gpaCalculationFormula(): String
 }
 
-class Student(name: String, age: Int, sex: String,
-              val studentId: String, var classId: String, var gpa: Double) extends Person(name, age, sex) {
+class Student(name: String, age: Int, gender: String,
+              val studentId: String, var classId: String, var gpa: Double) extends Person(name, age, gender) {
   private val hobbies: ArrayBuffer[Hobby] = ArrayBuffer[Hobby]()
 
   def attendClass(): Unit = {
     println(s"Attending to class $classId")
   }
-}
-
-class TechnicalStudent private (name: String, age: Int, sex: String, studentId: String, classId: String, gpa: Double)
-    extends Student(name, age, sex, studentId, classId, gpa) with Subject {
-  override def requiredSubjects(): List[String] = List("Algebra", "Statistic", "Calculus")
-
-  override def gpaCalculationFormula(): String = "((Algebra + Calculus + Statistic) * 2 + S1 + .. + Sn) / (n + 6)"
 }
 
 object Student {
@@ -59,6 +52,23 @@ object Student {
   def getHobbies(s: Student): ArrayBuffer[Hobby] = {
     s.hobbies
   }
+
+  def getReview(s: Student): String = {
+    ranking(s) match {
+      case Excellent => "Astounding"
+      case Good => "Very good, but I believe you can do better"
+      case Normal => "Try harder next time"
+      case Bad => "Need to spend more attention"
+      case _ => "I am extremely disappointed"
+    }
+  }
+}
+
+class TechnicalStudent private (name: String, age: Int, sex: String, studentId: String, classId: String, gpa: Double)
+  extends Student(name, age, sex, studentId, classId, gpa) with Subject {
+  override def requiredSubjects(): List[String] = List("Algebra", "Statistic", "Calculus")
+
+  override def gpaCalculationFormula(): String = "((Algebra + Calculus + Statistic) * 2 + S1 + .. + Sn) / (n + 6)"
 }
 
 object TechnicalStudent {
@@ -78,14 +88,11 @@ object Classes {
 
     println("Hobbies: ")
     Student.getHobbies(techStu).foreach(println)
-    println(Student.ranking(techStu) match {
-      case Excellent => "Astounding"
-      case Good => "Very good, but I believe you can do better"
-      case Normal => "Try harder next time"
-      case Bad => "Need to spend more attention"
-      case _ => "I am extremely disappointed"
-    })
+    print("Professor review: ")
+    println(Student.getReview(techStu))
+    print("Required subjects: ")
     println(techStu.requiredSubjects())
+    print("GPA formula: ")
     println(techStu.gpaCalculationFormula())
   }
 }
