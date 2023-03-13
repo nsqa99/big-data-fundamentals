@@ -11,9 +11,9 @@ object CustomPartitioning extends App {
     def getPartition(key: Any): Int = {
       val customerId = key.asInstanceOf[Double].toInt
       if (customerId == 17850.0 || customerId == 12583.0) {
-        return 0
+        0
       } else {
-        return new java.util.Random().nextInt(2) + 1
+        new java.util.Random().nextInt(2) + 1
       }
     }
   }
@@ -28,8 +28,8 @@ object CustomPartitioning extends App {
   val rdd = df.coalesce(10).rdd
   rdd.map(r => r(6)).take(5).foreach(println)
   val keyedRDD = rdd.keyBy(row => row(6).asInstanceOf[Int].toDouble)
-  keyedRDD
+  println(keyedRDD
     .partitionBy(new DomainPartitioner).map(_._1).glom().map(_.toSet.toSeq.length)
-    .take(5)
+    .take(5).mkString("Array(", ", ", ")"))
 
 }

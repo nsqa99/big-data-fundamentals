@@ -29,17 +29,26 @@ object PatternMatching {
 
   def validate(operator: Operator) = {
     operator match {
-      case Divide(_, 0) => "Invalid operator"
+      case divide: Divide if (divide.y == 0) => "Invalid operator"
       case _ => "Valid operator"
+    }
+  }
+
+  def typedPatternMatching(any: Any): String = {
+    any match {
+      case string: String => s"My value: $string is a string"
+      case integer: Int => s"My value: $integer is aa integer"
+      case _ => s"My value: $any is an unknown type"
     }
   }
 
   def main(args: Array[String]) = {
     val operator = Plus(1, 2)
-    val invalidOperator = Divide(1, 0)
-    println(calculate(operator))
-    print(validate(invalidOperator))
-    println(regexPatterns("0212"))
-    println(regexPatterns("sda./"))
+    val invalidOperator = new Divide(1, 0)
+//    println(calculate(operator))
+//    print(validate(invalidOperator))
+//    println(regexPatterns("0212"))
+//    println(regexPatterns("sda./"))
+    println(typedPatternMatching("sas"))
   }
 }

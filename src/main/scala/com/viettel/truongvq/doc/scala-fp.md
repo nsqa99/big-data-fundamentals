@@ -131,5 +131,84 @@ Currying is the process of converting a function with multiple arguments into a 
     println(plus(1, 2)) // 3
 ```
 ### PATTERN MATCHING
+Pattern matching is a mechanism for checking a value against a pattern.
+
+#### Matching with case class
+Case classes help us use the power of inheritance to perform pattern matching
+```
+  class Operator
+  case class Plus(x: Int, y: Int) extends Operator
+  case class Minus(x: Int, y: Int) extends Operator
+  case class Multiple(x: Int, y: Int) extends Operator
+  case class Divide(x: Int, y: Int) extends Operator
+
+  def calculate(operator: Operator) = {
+    operator match {
+      case Plus(x, y) => x + y
+      case Minus(x, y) => x - y
+      case Multiple(x, y) => x * y
+      case Divide(x, y) => x / y
+    }
+  }
+```
+#### Matching with type pattern
+Each object has a static type that cannot be changed, so it easy to match object against type patterns.
+```
+    def typedPatternMatching(any: Any): String = {
+    any match {
+      case string: String => s"My value: $string is a string"
+      case integer: Int => s"My value: $integer is aa integer"
+      case _ => s"My value: $any is an unknown type"
+    }
+  }
+```
+#### Matching with regex
+We can also use regular expressions when matching objects in our match expressions.
+```
+  def regexPatterns(toMatch: String) = {
+    val numeric = "([0-9]+)".r
+    val alphabetic = "([a-zA-Z]+)".r
+
+    toMatch match {
+      case numeric(value) => s"$value is numeric"
+      case alphabetic(value) => s"$value is alphabetic"
+      case _ => s"$toMatch is other type"
+    }
+  }
+```
+
+#### Pattern guards
+Pattern guards are boolean expressions which are used to make cases more specific.
+```
+  def validate(operator: Operator) = {
+    operator match {
+      case divide: Divide if (divide.y == 0) => "Invalid operator"
+      case _ => "Valid operator"
+    }
+  }
+```
 
 ### IMPLICIT
+#### Implicit parameter
+Pass parameter to a method silently without going through the regular parameters list.
+```
+def calculate(x: Int, y: Int)(implicit operator: (Int, Int) => Int) = operator(x, y)
+implicit val plus: (Int, Int) => Int = (x: Int, y: Int) => x + y
+calculate(1, 2) // 3
+```
+
+#### Implicit conversion
+Implicit conversions give the ability to convert one type into another
+```
+  class Rectangle(x: Int, y: Int) {
+    def area() = x * y
+  }
+  
+  case class Square(x: Int)
+  
+  implicit def squareToRectangle(square: Square): Rectangle = new Rectangle(square.x, square.x)
+
+  val square = Square(5)
+  println(square.area()) // 25
+ ```
+
