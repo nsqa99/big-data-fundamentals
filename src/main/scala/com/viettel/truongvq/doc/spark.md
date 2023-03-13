@@ -270,4 +270,31 @@ words.coalesce(1).getNumPartitions
 words.repartition(10)
 ```
 - Custom Partitioning: This ability is one of the primary reasons you’d want to use RDDs. The goal of custom partitioning is to even out the distribution of your data across the cluster so that you can work around problems like data skew.
+```
+  class DomainPartitioner extends Partitioner {
+    def numPartitions = 3
 
+    def getPartition(key: Any): Int = {
+      val customerId = key.asInstanceOf[Double].toInt
+      if (customerId == 17850.0 || customerId == 12583.0) {
+        0
+      } else {
+        new java.util.Random().nextInt(2) + 1
+      }
+    }
+  }
+
+  val spark = SparkSession.builder()
+    .master("local[1]")
+    .appName("CustomPartitioning")
+    .getOrCreate();
+
+  val df = spark.read.option("header", "true").option("inferSchema", "true")
+    .csv("src/main/resources/online-retail-dataset.csv")
+  val rdd = df.coalesce(10).rdd
+  rdd.map(r => r(6)).take(5).foreach(println)
+  val keyedRDD = rdd.keyBy(row => row(6).asInstanceOf[Int].toDouble)
+  println(keyedRDD
+    .partitionBy(new DomainPartitioner).map(_._1).glom().map(_.toSet.toSeq.length)
+    .take(5).mkString("Array(", ", ", ")"))
+```
