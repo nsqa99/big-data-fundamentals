@@ -7,11 +7,13 @@
 ## IMMUTABLE VALUES
 
 In pure functional programming, only immutable values are used.
+- All variables are created as val fields
+- Only immutable collections classes are used, such as List, Vector, and the immutable Map and Set classes
 
 ## PURE FUNCTIONS
-
+A pure function has two key properties:
 - It always returns the same value for the same inputs.
-- It has no side effects. A function with no side effects does nothing other than simply return a result. Any function that interacts with the state of the program can cause side effects.
+- It has no side effects. A function with no side effects does nothing other than simply return a result. Any function that interacts with the state of the program can cause side effects
   - Modifying a variable
   - Modifying a data structure in place
   - Setting a field on an object
@@ -26,6 +28,33 @@ In pure functional programming, only immutable values are used.
 def sum(x: Int, y: Int): Int = {
     x + y
 }
+```
+### DEFAULT PARAMETER VALUES
+```
+def sum(x: Int = 1, y: Int): Int = {
+    x + y
+}
+sum(2) // 3
+```
+
+### NAMED PARAMETER
+```
+def divide(numerator: Int, denominator: Int): Double = {
+  numerator / denominator
+}
+divide(denominator = 1, numerator = 0) // 0
+```
+
+### BY-NAME PARAMETER
+By-name parameters are evaluated every time they are used. They won’t be evaluated at all if they are unused
+```
+  def multi(a: Int, b: => Int) = {
+    if (a % 2 == 0) 0
+    else a * b
+  }
+  
+  println(multi(0, 3 / 0)) // 0
+  println(multi(1, 3 / 0)) // java.lang.ArithmeticException: / by zero
 ```
 
 ## FUNCTION
@@ -51,6 +80,7 @@ println(array.map(double).mkString("Array(", ", ", ")")) // Array(2, 4, 6, 8, 10
 
 
 ### ANONYMOUS FUNCTION
+A function that has no name but has a body, input parameters, and return type (optional) is an anonymous function
 ```
 (a: Int, b: Int) => a + b
 ```
@@ -71,16 +101,6 @@ The compiler will box the function code we provide into the appropriate object a
 if you write a symbol name followed by an argument list in parentheses (or just a pair of parentheses for an empty argument list), Scala converts that into a call to the apply method for the named object.
 
 
-### BY-NAME PARAMETER
-```
-  def multi(a: Int, b: => Int) = {
-    if (a % 2 == 0) 0
-    else a * b
-  }
-  
-  println(multi(0, 3 / 0)) // 0
-  println(multi(1, 3 / 0)) // java.lang.ArithmeticException: / by zero
-```
 
 ### HIGH ORDER FUNCTION
 A higher-order function has at least one of the following properties:
@@ -91,15 +111,15 @@ A higher-order function has at least one of the following properties:
     val array = Array(1,2,3,4,5)
     println(array.map(f => f * 2).mkString("Array(", ", ", ")")) // Array(2, 4, 6, 8, 10)
 
-    val calculate1 = (x: Int, y: Int, operator: (Int, Int) => Int) => operator(x, y)
+    val calculate = (x: Int, y: Int, operator: (Int, Int) => Int) => operator(x, y)
     val minus = (x: Int, y: Int) => x - y
     val plus = (x: Int, y: Int) => x + y
-    println(calculate1(1, 2, minus)) // -1
-    println(calculate1(1, 2, plus)) // 3
+    println(calculate(1, 2, minus)) // -1
+    println(calculate(1, 2, plus)) // 3
 ```
 
 ### FUNCTION CURRYING
-
+Currying is the process of converting a function with multiple arguments into a sequence of functions that take one argument. Each function returns another function that consumes the following argument.
 ```
     val getOperator: String => (Int, Int) => Int = (s: String) => (x: Int, y: Int) => {
         s match {
@@ -110,7 +130,6 @@ A higher-order function has at least one of the following properties:
     val plus = getOperator("+")
     println(plus(1, 2)) // 3
 ```
-
 ### PATTERN MATCHING
 
 ### IMPLICIT

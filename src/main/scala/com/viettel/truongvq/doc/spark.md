@@ -6,13 +6,20 @@ The goal of Spark was to create a new framework, optimized for fast iterative pr
 Hadoop MapReduce is a programming model for processing big data sets with a parallel, distributed algorithm. Developers can write massively parallelized operators, without having to worry about work distribution, and fault tolerance. However, a challenge to MapReduce is the sequential multi-step process it takes to run a job. With each step, MapReduce reads data from the cluster, performs operations, and writes the results back to HDFS. Because each step requires a disk read, and write, MapReduce jobs are slower due to the latency of disk I/O.
 
 Spark was created to address the limitations to MapReduce, by doing processing in-memory, reducing the number of steps in a job, and by reusing data across multiple parallel operations. With Spark, only one-step is needed where data is read into memory, operations performed, and the results written back—resulting in a much faster execution. Spark also reuses data by using an in-memory cache to greatly speed up machine learning algorithms that repeatedly call a function on the same dataset. Data re-use is accomplished through the creation of DataFrames, an abstraction over Resilient Distributed Dataset (RDD), which is a collection of objects that is cached in memory, and reused in multiple Spark operations. This dramatically lowers the latency making Spark multiple times faster than MapReduce, especially when doing machine learning, and interactive analytics.
-## Spark Component
-![alt](92214447_2562652790634293_8507872163703816192_n.jpg)
-- **Spark Core**: Spark Core provides the execution engine for the Spark platform which is required and used by other components which are built on top of Spark Core as per the requirement. Spark Core uses a very special data structure called the RDD.
-- **Spark SQL**: Spark SQL is Apache Spark's module for working with structured data
-- **Spark Streaming**: Spark Streaming is an extension of the core Spark API that enables scalable, high-throughput, fault-tolerant stream processing of live data streams
-- **Mlib**: MLlib is Apache Spark's scalable machine learning library.
-- **GraphX**: GraphX is Apache Spark's API for graphs and graph-parallel computation.
+
+[//]: # (## Spark Component)
+
+[//]: # (![alt]&#40;92214447_2562652790634293_8507872163703816192_n.jpg&#41;)
+
+[//]: # (- **Spark Core**: Spark Core provides the execution engine for the Spark platform which is required and used by other components which are built on top of Spark Core as per the requirement. Spark Core uses a very special data structure called the RDD.)
+
+[//]: # (- **Spark SQL**: Spark SQL is Apache Spark's module for working with structured data)
+
+[//]: # (- **Spark Streaming**: Spark Streaming is an extension of the core Spark API that enables scalable, high-throughput, fault-tolerant stream processing of live data streams)
+
+[//]: # (- **Mlib**: MLlib is Apache Spark's scalable machine learning library.)
+
+[//]: # (- **GraphX**: GraphX is Apache Spark's API for graphs and graph-parallel computation.)
 ## Spark architecture
 ![alt](spark-architechture.png)
 
@@ -40,7 +47,9 @@ You control your Spark Application through a driver process called the SparkSess
 The most common Structured API. Represents a table of data with rows and columns
 
 ### Partitions
-Spark breaks up the data into chunks called partitions
+Spark breaks up the data into chunks called partitions. A partition is a collection of rows that sit on one physical machine in your cluster. If you have one partition, Spark will have a parallelism of only one, even if you
+have thousands of executors. If you have many partitions but only one executor, Spark will still have a
+parallelism of only one because there is only one computation resource
 
 ### Transformations
 The core data structures are immutable. To “change” a data structure, you need to "transformation" it.
