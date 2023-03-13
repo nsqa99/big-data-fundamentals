@@ -275,26 +275,16 @@ words.repartition(10)
     def numPartitions = 3
 
     def getPartition(key: Any): Int = {
-      val customerId = key.asInstanceOf[Double].toInt
-      if (customerId == 17850.0 || customerId == 12583.0) {
-        0
-      } else {
-        new java.util.Random().nextInt(2) + 1
-      }
+      new java.util.Random().nextInt(2)
     }
   }
 
-  val spark = SparkSession.builder()
-    .master("local[1]")
-    .appName("CustomPartitioning")
-    .getOrCreate();
+  val myCollection = "Spark The Definitive Guide : Big Data Processing Made Simple"
+    .split(" ")
+  val words = spark.sparkContext.parallelize(myCollection, 4)
+  val rdd = words.rdd
+  val keyword = rdd.keyBy(word => word.toLowerCase.toSeq.head.toString)
+  println(keyword.glom().map(_.toSet.toSeq.length).collect().mkString("Array(", ", ", ")")) // Array(2, 3, 2, 3)
+  println(keyword.partitionBy(new DomainPartitioner).glom().map(_.toSet.toSeq.length).collect().mkString("Array(", ", ", ")")) // Array(5, 5, 0)
 
-  val df = spark.read.option("header", "true").option("inferSchema", "true")
-    .csv("src/main/resources/online-retail-dataset.csv")
-  val rdd = df.coalesce(10).rdd
-  rdd.map(r => r(6)).take(5).foreach(println)
-  val keyedRDD = rdd.keyBy(row => row(6).asInstanceOf[Int].toDouble)
-  println(keyedRDD
-    .partitionBy(new DomainPartitioner).map(_._1).glom().map(_.toSet.toSeq.length)
-    .take(5).mkString("Array(", ", ", ")"))
 ```
