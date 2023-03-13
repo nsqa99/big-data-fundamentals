@@ -9,7 +9,7 @@ object Joins {
 
     val person = Seq(
       (0, "AnhNSQ", 0, Seq(101)),
-      (1, "Harry Potter", Seq(101, 202)),
+      (1, "Harry Potter", 1, Seq(101, 202)),
       (2, "Jon Snow", 1, Seq(202, 303)))
       .toDF("id", "name", "graduate_program", "professor")
     val graduateProgram = Seq(
@@ -32,9 +32,8 @@ object Joins {
 //    val joinType = "cross"
     person.join(graduateProgram, joinExpression, joinType).show()
 
-    person.write.format("parquet")
-      .option("mode", "overwrite")
-      .parquet("./data/example/person.parquet")
+//    person.write.format("parquet")
+//      .parquet("./data/example/person.parquet")
 
     closeSession(spark)
   }

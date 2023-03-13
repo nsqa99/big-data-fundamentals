@@ -10,7 +10,7 @@
 * Concise but readable syntax
 * Scala is a pure object-oriented language: every variable is an object, every "operator" is a method
 * Scala is also a functional programming language: functions are also variables, can be passed into other functions.
-* Scala source code compiles to ".class" files run on JVM
+* Scala source code compiles to `.class` files run on JVM
 * Works well with Java libraries
 
 ## Basic built-in types

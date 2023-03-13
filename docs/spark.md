@@ -4,9 +4,9 @@ Spark is a unified analytics engine for large-scale data processing
 ## Architecture
 ### Cluster manager
 Cluster manager will manage the clusters of machines Spark uses to execute tasks.
-  * Spark's standalone cluster manager.
-  * YARN.
-  * Mesos.
+* Spark's standalone cluster manager.
+* YARN.
+* Mesos.
 
 ### Spark Applications
 * Consists of two processes:
@@ -20,23 +20,26 @@ Cluster manager will manage the clusters of machines Spark uses to execute tasks
 
 ## Spark APIs
 Two fundamental sets of APIs:
-  * Low-level "unstructed" APIs.
-  * Higher-level structured APIs.
+* Low-level "unstructed" APIs.
+* Higher-level structured APIs.
 
 ## Spark core
+* DataFrames and Datasets are (distributed) table-like collections with well-defined rows and columns
+
 ### DataFrames
 * The most common Structured API.
 * Represents a table of data with rows and columns.
 * Spark DataFrame can be partitioned and span thousands of computers, since the data is either too large to fit on one machine or it takes too long to perform the computation on one machine.
-* A DataFrame consists of a series of records (like rows in a table), that are of type Row, and a number of columns (like columns in a spreadsheet) that represent a computation expression that can be performed on each individual record in the Dataset.
+* A DataFrame consists of a series of records (like rows in a table) of type `Row`, and a number of columns that represent a computation expression that can be performed on each individual record in the Dataset.
+* `Row`: Spark’s internal representation of its optimized in-memory format for computation, makes for highly specialized and efficient computation over JVM types.
 
 ### Dataset
-* A distributed collection of data.
-* DataFrame is actually Dataset of type Row.
+* The foundational type of the structured APIs
 * Using Dataset will slow down operation due to the conversion from type Row to the case class type.
 * When to use Dataset:
   * When the operation(s) you would like to perform cannot be expressed using DataFrame manipulations
   * When you want or need type-safety, and you’re willing to accept the cost of performance to achieve it
+* DataFrame is actually Dataset of type `Row`
 
 ### Transformations
 * Core data structures in Spark are **immutable**.
@@ -66,15 +69,21 @@ Spark will not evaluate transformations until it meets an action.
 
 ### Structured Spark types
 * Spark uses an internal engine called Catalyst to maintain its own type information through the planning and processing of work.
-=> This avoids using JVM types, which can cause high garbage-collection and object instantiation cost.
+  => This avoids using JVM types, which can cause high garbage-collection and object instantiation cost.
 
 **Overview of structured APIs execution**
 
-The process of executing code on clusters:
-1. Write DataFrame/Dataset/SQL code.
-2. If code is valid, Spark converts it to a Logical Plan.
-3. Spark transforms this Logical Plan to a Physical Plan, checking for optimizations along the way.
-4. Spark then executes this Physical Plan (RDD manipulations) on the cluster.
+* The process of executing code on clusters:
+  1. Write DataFrame/Dataset/SQL code.
+  2. If code is valid, Spark converts it to a Logical Plan.
+     ![logicalplan](./images/logical-planning.png)
+  3. Spark transforms this Logical Plan to a Physical Plan, checking for optimizations along the way.
+     ![physicalplan](./images/physical-plan.png)
+  4. Spark then executes this Physical Plan (RDD manipulations) on the cluster.
+
+* Logical plan: an abstract of all transformation steps that need to be executed.
+* Physical plan: specifies how the logical plan will execute on the cluster.
+* Catalog: a repository of all table and DataFrame information
 
 ### Basic structured operations
 * Schemas define the name as well as the type of data in each column of Dataset (also DataFrame)
@@ -85,7 +94,7 @@ val df = spark.read.format("json")
 df.printSchema()
 ```
 * We can either let a data source define the schema (schema-on-read) or we can define it explicitly ourselves (schema-on-write).
-Schema-on-read may lead to wrong type inference.
+  Schema-on-read may lead to wrong type inference.
 
 * Manual define schema:
 ```
@@ -127,7 +136,7 @@ val myDf = spark.createDataFrame(myRDD, myManualSchema)
 myDf.show()
 ```
 * Query data
-  
+
   `select` and `selectExpr` allow you to do the DataFrame equivalent of SQL queries on a table of data
   ```
   // in Scala
@@ -196,9 +205,31 @@ df.orderBy(col("counter"), col("DEST_COUNTRY_NAME")).show(5)
 ```
 
 * Collect rows to the driver
-Any collection of data to the driver can be a very expensive operation: driver can be crashed if the dataset is too large.
+  Any collection of data to the driver can be a very expensive operation: driver can be crashed if the dataset is too large.
 ```
 df.collect()
+```
+
+### User-defined functions
+
+User-defined functions (UDFs) make it possible to write custom transformations
+
+```
+import org.apache.spark.sql.functions.udf
+
+def power3(number:Double):Double = number * number * number
+
+val udfExampleDF = spark.range(5).toDF("num")
+val power3udf = udf(power3(_:Double):Double)
+
+udfExampleDF.select(power3udf(col("num"))).show()
+```
+
+* Can be used as a SQL function
+```
+spark.udf.register("power3", power3(_:Double):Double)
+
+udfExampleDF.selectExpr("power3(num)").show(2)
 ```
 
 ### Working with data types
@@ -429,10 +460,10 @@ person.join(graduateProgram, joinExpression, joinType).show()
 
 #### Read data
 `spark.read` returns a DataFrame reader, then we must specify several values:
-  * The `format`
-  * The `schema`
-  * The `read mode`
-  * Several `options`
+* The `format`
+* The `schema`
+* The `read mode`
+* Several `options`
 
 ```
 spark.read.format("csv")
@@ -495,7 +526,7 @@ Same as DataFrame: `collect`, `take`, `count`
 
 #### Filtering
 * Create a function to define a filter. This can be resource intensive since it forces Spark to execute the function on every row in Dataset.
-=> For small filters, it's always prefered to write SQL expressions.
+  => For small filters, it's always prefered to write SQL expressions.
 ```
 def originIsDestination(flight_row: Flight): Boolean = {
   flight_row.ORIGIN_COUNTRY_NAME == flight_row.DEST_COUNTRY_NAME

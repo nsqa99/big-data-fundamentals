@@ -4,12 +4,13 @@ import com.viettel.anhnsq.spark_demo.SparkSessionUtils.{closeSession, getSession
 
 object Dataset {
   case class Flight(DEST_COUNTRY_NAME: String, ORIGIN_COUNTRY_NAME: String, count: BigInt)
+  case class FlightMetadata(count: BigInt, randomData: BigInt)
 
   def main(args: Array[String]): Unit = {
     val spark = getSession
     import spark.implicits._
 
-    val flightsDF = spark.read.parquet("/data/flight-data/parquet/2010-summary.parquet/")
+    val flightsDF = spark.read.parquet("./data/flight-data/parquet/2010-summary.parquet/")
     val flights = flightsDF.as[Flight]
 
     // Filter
@@ -24,8 +25,6 @@ object Dataset {
     println(destinations.take(2).mkString("[", ", ", "]"))
 
     // join
-    case class FlightMetadata(count: BigInt, randomData: BigInt)
-
     val flightsMeta = spark.range(500).map(x => (x, scala.util.Random.nextLong))
       .withColumnRenamed("_1", "count").withColumnRenamed("_2", "randomData")
       .as[FlightMetadata]
