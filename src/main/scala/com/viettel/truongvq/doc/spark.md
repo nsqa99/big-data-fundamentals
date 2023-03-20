@@ -288,3 +288,27 @@ words.repartition(10)
   println(keyword.partitionBy(new DomainPartitioner).glom().map(_.toSet.toSeq.length).collect().mkString("Array(", ", ", ")")) // Array(5, 5, 0)
 
 ```
+
+## Structure API 
+
+### Structure API execution
+
+- Write DataFrame/Dataset/SQL Code.
+- If valid code, Spark converts this to a Logical Plan. 
+- Spark transforms this Logical Plan to a Physical Plan, checking for optimizations along the
+   way. 
+- Spark then executes this Physical Plan (RDD manipulations) on the cluster.
+
+### Operations
+
+#### Schemas
+A schema defines the column names and types of a DataFrame. We can either let a data source define
+the schema (called schema-on-read) or we can define it explicitly ourselves.
+
+#### Column
+Columns are logical constructions that simply represent a value computed on a per-record
+basis by means of an expression.
+
+#### Expressions
+An expression is a set of transformations on one or more values in a record in a DataFrame
+
