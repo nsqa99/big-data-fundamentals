@@ -1,4 +1,4 @@
-# Hadoop notes
+# Hadoop
 
 **Filesystem:** is a method and data structure that the operating system uses to control how data is stored and retrieved.
 
