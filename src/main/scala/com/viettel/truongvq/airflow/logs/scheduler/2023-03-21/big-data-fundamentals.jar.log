@@ -1,0 +1,55 @@
+[2023-03-21T11:15:53.015+0000] {processor.py:153} INFO - Started process (PID=48) to work on /opt/airflow/dags/big-data-fundamentals.jar
+[2023-03-21T11:15:53.016+0000] {processor.py:743} INFO - Processing file /opt/airflow/dags/big-data-fundamentals.jar for tasks to queue
+[2023-03-21T11:15:53.016+0000] {logging_mixin.py:137} INFO - [2023-03-21T11:15:53.016+0000] {dagbag.py:532} INFO - Filling up the DagBag from /opt/airflow/dags/big-data-fundamentals.jar
+[2023-03-21T11:15:53.017+0000] {processor.py:755} WARNING - No viable dags retrieved from /opt/airflow/dags/big-data-fundamentals.jar
+[2023-03-21T11:15:53.027+0000] {processor.py:175} INFO - Processing /opt/airflow/dags/big-data-fundamentals.jar took 0.014 seconds
+[2023-03-21T11:16:23.493+0000] {processor.py:153} INFO - Started process (PID=61) to work on /opt/airflow/dags/big-data-fundamentals.jar
+[2023-03-21T11:16:23.493+0000] {processor.py:743} INFO - Processing file /opt/airflow/dags/big-data-fundamentals.jar for tasks to queue
+[2023-03-21T11:16:23.494+0000] {logging_mixin.py:137} INFO - [2023-03-21T11:16:23.493+0000] {dagbag.py:532} INFO - Filling up the DagBag from /opt/airflow/dags/big-data-fundamentals.jar
+[2023-03-21T11:16:23.494+0000] {processor.py:755} WARNING - No viable dags retrieved from /opt/airflow/dags/big-data-fundamentals.jar
+[2023-03-21T11:16:23.503+0000] {processor.py:175} INFO - Processing /opt/airflow/dags/big-data-fundamentals.jar took 0.012 seconds
+[2023-03-21T11:16:53.850+0000] {processor.py:153} INFO - Started process (PID=74) to work on /opt/airflow/dags/big-data-fundamentals.jar
+[2023-03-21T11:16:53.851+0000] {processor.py:743} INFO - Processing file /opt/airflow/dags/big-data-fundamentals.jar for tasks to queue
+[2023-03-21T11:16:53.852+0000] {logging_mixin.py:137} INFO - [2023-03-21T11:16:53.851+0000] {dagbag.py:532} INFO - Filling up the DagBag from /opt/airflow/dags/big-data-fundamentals.jar
+[2023-03-21T11:16:53.852+0000] {processor.py:755} WARNING - No viable dags retrieved from /opt/airflow/dags/big-data-fundamentals.jar
+[2023-03-21T11:16:53.864+0000] {processor.py:175} INFO - Processing /opt/airflow/dags/big-data-fundamentals.jar took 0.017 seconds
+[2023-03-21T11:18:02.674+0000] {processor.py:153} INFO - Started process (PID=47) to work on /opt/airflow/dags/big-data-fundamentals.jar
+[2023-03-21T11:18:02.675+0000] {processor.py:743} INFO - Processing file /opt/airflow/dags/big-data-fundamentals.jar for tasks to queue
+[2023-03-21T11:18:02.675+0000] {logging_mixin.py:137} INFO - [2023-03-21T11:18:02.675+0000] {dagbag.py:532} INFO - Filling up the DagBag from /opt/airflow/dags/big-data-fundamentals.jar
+[2023-03-21T11:18:02.676+0000] {processor.py:755} WARNING - No viable dags retrieved from /opt/airflow/dags/big-data-fundamentals.jar
+[2023-03-21T11:18:02.687+0000] {processor.py:175} INFO - Processing /opt/airflow/dags/big-data-fundamentals.jar took 0.016 seconds
+[2023-03-21T11:18:33.069+0000] {processor.py:153} INFO - Started process (PID=60) to work on /opt/airflow/dags/big-data-fundamentals.jar
+[2023-03-21T11:18:33.070+0000] {processor.py:743} INFO - Processing file /opt/airflow/dags/big-data-fundamentals.jar for tasks to queue
+[2023-03-21T11:18:33.070+0000] {logging_mixin.py:137} INFO - [2023-03-21T11:18:33.070+0000] {dagbag.py:532} INFO - Filling up the DagBag from /opt/airflow/dags/big-data-fundamentals.jar
+[2023-03-21T11:18:33.071+0000] {processor.py:755} WARNING - No viable dags retrieved from /opt/airflow/dags/big-data-fundamentals.jar
+[2023-03-21T11:18:33.082+0000] {processor.py:175} INFO - Processing /opt/airflow/dags/big-data-fundamentals.jar took 0.016 seconds
+[2023-03-21T11:19:03.494+0000] {processor.py:153} INFO - Started process (PID=73) to work on /opt/airflow/dags/big-data-fundamentals.jar
+[2023-03-21T11:19:03.502+0000] {processor.py:743} INFO - Processing file /opt/airflow/dags/big-data-fundamentals.jar for tasks to queue
+[2023-03-21T11:19:03.502+0000] {logging_mixin.py:137} INFO - [2023-03-21T11:19:03.502+0000] {dagbag.py:532} INFO - Filling up the DagBag from /opt/airflow/dags/big-data-fundamentals.jar
+[2023-03-21T11:19:03.503+0000] {processor.py:755} WARNING - No viable dags retrieved from /opt/airflow/dags/big-data-fundamentals.jar
+[2023-03-21T11:19:03.512+0000] {processor.py:175} INFO - Processing /opt/airflow/dags/big-data-fundamentals.jar took 0.020 seconds
+[2023-03-21T11:19:33.890+0000] {processor.py:153} INFO - Started process (PID=86) to work on /opt/airflow/dags/big-data-fundamentals.jar
+[2023-03-21T11:19:33.900+0000] {processor.py:743} INFO - Processing file /opt/airflow/dags/big-data-fundamentals.jar for tasks to queue
+[2023-03-21T11:19:33.901+0000] {logging_mixin.py:137} INFO - [2023-03-21T11:19:33.901+0000] {dagbag.py:532} INFO - Filling up the DagBag from /opt/airflow/dags/big-data-fundamentals.jar
+[2023-03-21T11:19:33.902+0000] {processor.py:755} WARNING - No viable dags retrieved from /opt/airflow/dags/big-data-fundamentals.jar
+[2023-03-21T11:19:33.913+0000] {processor.py:175} INFO - Processing /opt/airflow/dags/big-data-fundamentals.jar took 0.025 seconds
+[2023-03-21T11:20:08.033+0000] {processor.py:153} INFO - Started process (PID=47) to work on /opt/airflow/dags/big-data-fundamentals.jar
+[2023-03-21T11:20:08.039+0000] {processor.py:743} INFO - Processing file /opt/airflow/dags/big-data-fundamentals.jar for tasks to queue
+[2023-03-21T11:20:08.039+0000] {logging_mixin.py:137} INFO - [2023-03-21T11:20:08.039+0000] {dagbag.py:532} INFO - Filling up the DagBag from /opt/airflow/dags/big-data-fundamentals.jar
+[2023-03-21T11:20:08.040+0000] {processor.py:755} WARNING - No viable dags retrieved from /opt/airflow/dags/big-data-fundamentals.jar
+[2023-03-21T11:20:08.052+0000] {processor.py:175} INFO - Processing /opt/airflow/dags/big-data-fundamentals.jar took 0.021 seconds
+[2023-03-21T11:20:38.424+0000] {processor.py:153} INFO - Started process (PID=60) to work on /opt/airflow/dags/big-data-fundamentals.jar
+[2023-03-21T11:20:38.430+0000] {processor.py:743} INFO - Processing file /opt/airflow/dags/big-data-fundamentals.jar for tasks to queue
+[2023-03-21T11:20:38.431+0000] {logging_mixin.py:137} INFO - [2023-03-21T11:20:38.431+0000] {dagbag.py:532} INFO - Filling up the DagBag from /opt/airflow/dags/big-data-fundamentals.jar
+[2023-03-21T11:20:38.432+0000] {processor.py:755} WARNING - No viable dags retrieved from /opt/airflow/dags/big-data-fundamentals.jar
+[2023-03-21T11:20:38.441+0000] {processor.py:175} INFO - Processing /opt/airflow/dags/big-data-fundamentals.jar took 0.019 seconds
+[2023-03-21T11:21:08.792+0000] {processor.py:153} INFO - Started process (PID=73) to work on /opt/airflow/dags/big-data-fundamentals.jar
+[2023-03-21T11:21:08.796+0000] {processor.py:743} INFO - Processing file /opt/airflow/dags/big-data-fundamentals.jar for tasks to queue
+[2023-03-21T11:21:08.797+0000] {logging_mixin.py:137} INFO - [2023-03-21T11:21:08.797+0000] {dagbag.py:532} INFO - Filling up the DagBag from /opt/airflow/dags/big-data-fundamentals.jar
+[2023-03-21T11:21:08.799+0000] {processor.py:755} WARNING - No viable dags retrieved from /opt/airflow/dags/big-data-fundamentals.jar
+[2023-03-21T11:21:08.815+0000] {processor.py:175} INFO - Processing /opt/airflow/dags/big-data-fundamentals.jar took 0.028 seconds
+[2023-03-21T11:21:39.136+0000] {processor.py:153} INFO - Started process (PID=86) to work on /opt/airflow/dags/big-data-fundamentals.jar
+[2023-03-21T11:21:39.143+0000] {processor.py:743} INFO - Processing file /opt/airflow/dags/big-data-fundamentals.jar for tasks to queue
+[2023-03-21T11:21:39.145+0000] {logging_mixin.py:137} INFO - [2023-03-21T11:21:39.144+0000] {dagbag.py:532} INFO - Filling up the DagBag from /opt/airflow/dags/big-data-fundamentals.jar
+[2023-03-21T11:21:39.148+0000] {processor.py:755} WARNING - No viable dags retrieved from /opt/airflow/dags/big-data-fundamentals.jar
+[2023-03-21T11:21:39.157+0000] {processor.py:175} INFO - Processing /opt/airflow/dags/big-data-fundamentals.jar took 0.024 seconds
