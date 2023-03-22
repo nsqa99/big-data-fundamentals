@@ -55,10 +55,10 @@ x-airflow-common:
   environment:
     &airflow-common-env
     AIRFLOW__CORE__EXECUTOR: CeleryExecutor
-    AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: postgresql+psycopg2://airflow:airflow@postgres/airflow
+    AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: postgresql+psycopg2://airflow:airflow@localhost:5430/airflow
     # For backward compatibility, with Airflow <2.3
-    AIRFLOW__CORE__SQL_ALCHEMY_CONN: postgresql+psycopg2://airflow:airflow@postgres/airflow
-    AIRFLOW__CELERY__RESULT_BACKEND: db+postgresql://airflow:airflow@postgres/airflow
+    AIRFLOW__CORE__SQL_ALCHEMY_CONN: postgresql+psycopg2://airflow:airflow@localhost:5430/airflow
+    AIRFLOW__CELERY__RESULT_BACKEND: db+postgresql://airflow:airflow@localhost:5430/airflow
     AIRFLOW__CELERY__BROKER_URL: redis://:@redis:6379/0
     AIRFLOW__CORE__FERNET_KEY: ''
     AIRFLOW__CORE__DAGS_ARE_PAUSED_AT_CREATION: 'true'
@@ -87,6 +87,7 @@ x-airflow-common:
 services:
   postgres:
     image: postgres:13
+    network_mode: "host"
     environment:
       POSTGRES_USER: airflow
       POSTGRES_PASSWORD: airflow
@@ -102,6 +103,7 @@ services:
 
   redis:
     image: redis:latest
+    network_mode: "host"
     expose:
       - 6379
     healthcheck:
@@ -115,6 +117,7 @@ services:
   airflow-webserver:
     <<: *airflow-common
     command: webserver
+    network_mode: "host"
     ports:
       - "8080:8080"
     healthcheck:
@@ -132,6 +135,7 @@ services:
   airflow-scheduler:
     <<: *airflow-common
     command: scheduler
+    network_mode: "host"
     healthcheck:
       test: ["CMD", "curl", "--fail", "http://localhost:8974/health"]
       interval: 30s
@@ -147,6 +151,7 @@ services:
   airflow-worker:
     <<: *airflow-common
     command: celery worker
+    network_mode: "host"
     healthcheck:
       test:
         - "CMD-SHELL"
@@ -169,6 +174,7 @@ services:
   airflow-triggerer:
     <<: *airflow-common
     command: triggerer
+    network_mode: "host"
     healthcheck:
       test: ["CMD-SHELL", 'airflow jobs check --job-type TriggererJob --hostname "$${HOSTNAME}"']
       interval: 30s

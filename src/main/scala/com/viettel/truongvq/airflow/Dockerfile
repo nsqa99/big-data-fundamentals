@@ -1,6 +1,7 @@
 FROM apache/airflow:2.5.2
 USER root
 RUN apt-get update \
+  && apt-get install wget \
   && apt-get install -y --no-install-recommends \
          openjdk-11-jre-headless \
   && apt-get autoremove -yqq --purge \

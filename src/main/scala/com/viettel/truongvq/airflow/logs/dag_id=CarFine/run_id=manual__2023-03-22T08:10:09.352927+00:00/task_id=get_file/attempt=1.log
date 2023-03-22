@@ -1,0 +1,43 @@
+[2023-03-22T08:10:10.457+0000] {taskinstance.py:1084} INFO - Dependencies all met for dep_context=non-requeueable deps ti=<TaskInstance: CarFine.get_file manual__2023-03-22T08:10:09.352927+00:00 [queued]>
+[2023-03-22T08:10:10.463+0000] {taskinstance.py:1084} INFO - Dependencies all met for dep_context=requeueable deps ti=<TaskInstance: CarFine.get_file manual__2023-03-22T08:10:09.352927+00:00 [queued]>
+[2023-03-22T08:10:10.463+0000] {taskinstance.py:1282} INFO - 
+--------------------------------------------------------------------------------
+[2023-03-22T08:10:10.463+0000] {taskinstance.py:1283} INFO - Starting attempt 1 of 1
+[2023-03-22T08:10:10.463+0000] {taskinstance.py:1284} INFO - 
+--------------------------------------------------------------------------------
+[2023-03-22T08:10:10.473+0000] {taskinstance.py:1303} INFO - Executing <Task(BashOperator): get_file> on 2023-03-22 08:10:09.352927+00:00
+[2023-03-22T08:10:10.476+0000] {standard_task_runner.py:55} INFO - Started process 4858 to run task
+[2023-03-22T08:10:10.478+0000] {standard_task_runner.py:82} INFO - Running: ['***', 'tasks', 'run', 'CarFine', 'get_file', 'manual__2023-03-22T08:10:09.352927+00:00', '--job-id', '370', '--raw', '--subdir', 'DAGS_FOLDER/CarFineDAG.py', '--cfg-path', '/tmp/tmpuqd_k3xh']
+[2023-03-22T08:10:10.478+0000] {standard_task_runner.py:83} INFO - Job 370: Subtask get_file
+[2023-03-22T08:10:10.519+0000] {task_command.py:388} INFO - Running <TaskInstance: CarFine.get_file manual__2023-03-22T08:10:09.352927+00:00 [running]> on host ed9661b333ec
+[2023-03-22T08:10:10.568+0000] {taskinstance.py:1511} INFO - Exporting the following env vars:
+AIRFLOW_CTX_DAG_OWNER=***
+AIRFLOW_CTX_DAG_ID=CarFine
+AIRFLOW_CTX_TASK_ID=get_file
+AIRFLOW_CTX_EXECUTION_DATE=2023-03-22T08:10:09.352927+00:00
+AIRFLOW_CTX_TRY_NUMBER=1
+AIRFLOW_CTX_DAG_RUN_ID=manual__2023-03-22T08:10:09.352927+00:00
+[2023-03-22T08:10:10.569+0000] {subprocess.py:63} INFO - Tmp dir root location: 
+ /tmp
+[2023-03-22T08:10:10.569+0000] {subprocess.py:75} INFO - Running command: ['/bin/bash', '-c', 'wget -P /home/*** https://www.dl.dropboxusercontent.com/s/q1de0kkhhxp5vo9/data.json']
+[2023-03-22T08:10:10.576+0000] {subprocess.py:86} INFO - Output:
+[2023-03-22T08:10:10.579+0000] {subprocess.py:93} INFO - --2023-03-22 08:10:10--  https://www.dl.dropboxusercontent.com/s/q1de0kkhhxp5vo9/data.json
+[2023-03-22T08:10:10.585+0000] {subprocess.py:93} INFO - Resolving www.dl.dropboxusercontent.com (www.dl.dropboxusercontent.com)... 162.125.81.15, 2620:100:6031:15::a27d:510f
+[2023-03-22T08:10:10.684+0000] {subprocess.py:93} INFO - Connecting to www.dl.dropboxusercontent.com (www.dl.dropboxusercontent.com)|162.125.81.15|:443... connected.
+[2023-03-22T08:10:11.636+0000] {subprocess.py:93} INFO - HTTP request sent, awaiting response... 200 OK
+[2023-03-22T08:10:11.636+0000] {subprocess.py:93} INFO - Length: 259778 (254K) [text/plain]
+[2023-03-22T08:10:11.637+0000] {subprocess.py:93} INFO - Saving to: ‘/home/***/data.json.6’
+[2023-03-22T08:10:11.759+0000] {subprocess.py:93} INFO - 
+[2023-03-22T08:10:11.883+0000] {subprocess.py:93} INFO -      0K .......... .......... .......... .......... .......... 19%  203K 1s
+[2023-03-22T08:10:11.971+0000] {subprocess.py:93} INFO -     50K .......... .......... .......... .......... .......... 39%  568K 1s
+[2023-03-22T08:10:12.043+0000] {subprocess.py:93} INFO -    100K .......... .......... .......... .......... .......... 59%  692K 0s
+[2023-03-22T08:10:12.076+0000] {subprocess.py:93} INFO -    150K .......... .......... .......... .......... .......... 78% 1.52M 0s
+[2023-03-22T08:10:12.103+0000] {subprocess.py:93} INFO -    200K .......... .......... .......... .......... .......... 98% 1.77M 0s
+[2023-03-22T08:10:12.103+0000] {subprocess.py:93} INFO -    250K ...                                                   100% 6.87T=0.5s
+[2023-03-22T08:10:12.104+0000] {subprocess.py:93} INFO - 
+[2023-03-22T08:10:12.104+0000] {subprocess.py:93} INFO - 2023-03-22 08:10:12 (543 KB/s) - ‘/home/***/data.json.6’ saved [259778/259778]
+[2023-03-22T08:10:12.104+0000] {subprocess.py:93} INFO - 
+[2023-03-22T08:10:12.104+0000] {subprocess.py:97} INFO - Command exited with return code 0
+[2023-03-22T08:10:12.130+0000] {taskinstance.py:1326} INFO - Marking task as SUCCESS. dag_id=CarFine, task_id=get_file, execution_date=20230322T081009, start_date=20230322T081010, end_date=20230322T081012
+[2023-03-22T08:10:12.174+0000] {local_task_job.py:212} INFO - Task exited with return code 0
+[2023-03-22T08:10:12.196+0000] {taskinstance.py:2585} INFO - 0 downstream tasks scheduled from follow-on schedule check

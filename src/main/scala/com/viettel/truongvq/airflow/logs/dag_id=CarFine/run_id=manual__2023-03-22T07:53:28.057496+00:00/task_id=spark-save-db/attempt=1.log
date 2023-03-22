@@ -1,0 +1,142 @@
+[2023-03-22T07:53:31.176+0000] {taskinstance.py:1084} INFO - Dependencies all met for dep_context=non-requeueable deps ti=<TaskInstance: CarFine.spark-save-db manual__2023-03-22T07:53:28.057496+00:00 [queued]>
+[2023-03-22T07:53:31.183+0000] {taskinstance.py:1084} INFO - Dependencies all met for dep_context=requeueable deps ti=<TaskInstance: CarFine.spark-save-db manual__2023-03-22T07:53:28.057496+00:00 [queued]>
+[2023-03-22T07:53:31.183+0000] {taskinstance.py:1282} INFO - 
+--------------------------------------------------------------------------------
+[2023-03-22T07:53:31.183+0000] {taskinstance.py:1283} INFO - Starting attempt 1 of 1
+[2023-03-22T07:53:31.183+0000] {taskinstance.py:1284} INFO - 
+--------------------------------------------------------------------------------
+[2023-03-22T07:53:31.195+0000] {taskinstance.py:1303} INFO - Executing <Task(SparkSubmitOperator): spark-save-db> on 2023-03-22 07:53:28.057496+00:00
+[2023-03-22T07:53:31.198+0000] {standard_task_runner.py:55} INFO - Started process 3030 to run task
+[2023-03-22T07:53:31.200+0000] {standard_task_runner.py:82} INFO - Running: ['***', 'tasks', 'run', 'CarFine', 'spark-save-db', 'manual__2023-03-22T07:53:28.057496+00:00', '--job-id', '355', '--raw', '--subdir', 'DAGS_FOLDER/CarFineDAG.py', '--cfg-path', '/tmp/tmp7_hwhskc']
+[2023-03-22T07:53:31.200+0000] {standard_task_runner.py:83} INFO - Job 355: Subtask spark-save-db
+[2023-03-22T07:53:31.250+0000] {task_command.py:388} INFO - Running <TaskInstance: CarFine.spark-save-db manual__2023-03-22T07:53:28.057496+00:00 [running]> on host ed9661b333ec
+[2023-03-22T07:53:31.309+0000] {taskinstance.py:1511} INFO - Exporting the following env vars:
+AIRFLOW_CTX_DAG_OWNER=***
+AIRFLOW_CTX_DAG_ID=CarFine
+AIRFLOW_CTX_TASK_ID=spark-save-db
+AIRFLOW_CTX_EXECUTION_DATE=2023-03-22T07:53:28.057496+00:00
+AIRFLOW_CTX_TRY_NUMBER=1
+AIRFLOW_CTX_DAG_RUN_ID=manual__2023-03-22T07:53:28.057496+00:00
+[2023-03-22T07:53:31.315+0000] {base.py:73} INFO - Using connection ID 'spark-connection' for task execution.
+[2023-03-22T07:53:31.316+0000] {spark_submit.py:335} INFO - Spark-Submit cmd: spark-submit --master spark://vtn-truongvq:7077 --name arrow-spark --class com.viettel.truongvq.spark.SparkJob --verbose /opt/***/plugins/big-data-fundamentals.jar
+[2023-03-22T07:53:31.409+0000] {spark_submit.py:488} INFO - /home/***/.local/lib/python3.7/site-packages/pyspark/bin/load-spark-env.sh: line 68: ps: command not found
+[2023-03-22T07:53:32.435+0000] {spark_submit.py:488} INFO - Using properties file: null
+[2023-03-22T07:53:32.522+0000] {spark_submit.py:488} INFO - Parsed arguments:
+[2023-03-22T07:53:32.522+0000] {spark_submit.py:488} INFO - master                  spark://vtn-truongvq:7077
+[2023-03-22T07:53:32.523+0000] {spark_submit.py:488} INFO - deployMode              null
+[2023-03-22T07:53:32.523+0000] {spark_submit.py:488} INFO - executorMemory          null
+[2023-03-22T07:53:32.523+0000] {spark_submit.py:488} INFO - executorCores           null
+[2023-03-22T07:53:32.523+0000] {spark_submit.py:488} INFO - totalExecutorCores      null
+[2023-03-22T07:53:32.523+0000] {spark_submit.py:488} INFO - propertiesFile          null
+[2023-03-22T07:53:32.523+0000] {spark_submit.py:488} INFO - driverMemory            null
+[2023-03-22T07:53:32.523+0000] {spark_submit.py:488} INFO - driverCores             null
+[2023-03-22T07:53:32.523+0000] {spark_submit.py:488} INFO - driverExtraClassPath    null
+[2023-03-22T07:53:32.523+0000] {spark_submit.py:488} INFO - driverExtraLibraryPath  null
+[2023-03-22T07:53:32.523+0000] {spark_submit.py:488} INFO - driverExtraJavaOptions  null
+[2023-03-22T07:53:32.524+0000] {spark_submit.py:488} INFO - supervise               false
+[2023-03-22T07:53:32.524+0000] {spark_submit.py:488} INFO - queue                   null
+[2023-03-22T07:53:32.524+0000] {spark_submit.py:488} INFO - numExecutors            null
+[2023-03-22T07:53:32.524+0000] {spark_submit.py:488} INFO - files                   null
+[2023-03-22T07:53:32.524+0000] {spark_submit.py:488} INFO - pyFiles                 null
+[2023-03-22T07:53:32.524+0000] {spark_submit.py:488} INFO - archives                null
+[2023-03-22T07:53:32.524+0000] {spark_submit.py:488} INFO - mainClass               com.viettel.truongvq.spark.SparkJob
+[2023-03-22T07:53:32.524+0000] {spark_submit.py:488} INFO - primaryResource         file:/opt/***/plugins/big-data-fundamentals.jar
+[2023-03-22T07:53:32.524+0000] {spark_submit.py:488} INFO - name                    arrow-spark
+[2023-03-22T07:53:32.524+0000] {spark_submit.py:488} INFO - childArgs               []
+[2023-03-22T07:53:32.525+0000] {spark_submit.py:488} INFO - jars                    null
+[2023-03-22T07:53:32.525+0000] {spark_submit.py:488} INFO - packages                null
+[2023-03-22T07:53:32.525+0000] {spark_submit.py:488} INFO - packagesExclusions      null
+[2023-03-22T07:53:32.525+0000] {spark_submit.py:488} INFO - repositories            null
+[2023-03-22T07:53:32.525+0000] {spark_submit.py:488} INFO - verbose                 true
+[2023-03-22T07:53:32.525+0000] {spark_submit.py:488} INFO - 
+[2023-03-22T07:53:32.525+0000] {spark_submit.py:488} INFO - Spark properties used, including those specified through
+[2023-03-22T07:53:32.525+0000] {spark_submit.py:488} INFO - --conf and those from the properties file null:
+[2023-03-22T07:53:32.525+0000] {spark_submit.py:488} INFO - 
+[2023-03-22T07:53:32.525+0000] {spark_submit.py:488} INFO - 
+[2023-03-22T07:53:32.525+0000] {spark_submit.py:488} INFO - 
+[2023-03-22T07:53:32.729+0000] {spark_submit.py:488} INFO - Main class:
+[2023-03-22T07:53:32.730+0000] {spark_submit.py:488} INFO - com.viettel.truongvq.spark.SparkJob
+[2023-03-22T07:53:32.730+0000] {spark_submit.py:488} INFO - Arguments:
+[2023-03-22T07:53:32.730+0000] {spark_submit.py:488} INFO - 
+[2023-03-22T07:53:32.732+0000] {spark_submit.py:488} INFO - Spark config:
+[2023-03-22T07:53:32.732+0000] {spark_submit.py:488} INFO - (spark.app.name,arrow-spark)
+[2023-03-22T07:53:32.732+0000] {spark_submit.py:488} INFO - (spark.app.submitTime,1679471612717)
+[2023-03-22T07:53:32.732+0000] {spark_submit.py:488} INFO - (spark.jars,file:/opt/***/plugins/big-data-fundamentals.jar)
+[2023-03-22T07:53:32.733+0000] {spark_submit.py:488} INFO - (spark.master,spark://vtn-truongvq:7077)
+[2023-03-22T07:53:32.733+0000] {spark_submit.py:488} INFO - (spark.submit.deployMode,client)
+[2023-03-22T07:53:32.733+0000] {spark_submit.py:488} INFO - (spark.submit.pyFiles,)
+[2023-03-22T07:53:32.733+0000] {spark_submit.py:488} INFO - Classpath elements:
+[2023-03-22T07:53:32.733+0000] {spark_submit.py:488} INFO - file:/opt/***/plugins/big-data-fundamentals.jar
+[2023-03-22T07:53:32.733+0000] {spark_submit.py:488} INFO - 
+[2023-03-22T07:53:32.733+0000] {spark_submit.py:488} INFO - 
+[2023-03-22T07:53:32.767+0000] {spark_submit.py:488} INFO - 23/03/22 07:53:32 INFO SparkContext: Running Spark version 3.3.2
+[2023-03-22T07:53:32.812+0000] {spark_submit.py:488} INFO - 23/03/22 07:53:32 WARN NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+[2023-03-22T07:53:32.888+0000] {spark_submit.py:488} INFO - 23/03/22 07:53:32 INFO ResourceUtils: ==============================================================
+[2023-03-22T07:53:32.889+0000] {spark_submit.py:488} INFO - 23/03/22 07:53:32 INFO ResourceUtils: No custom resources configured for spark.driver.
+[2023-03-22T07:53:32.889+0000] {spark_submit.py:488} INFO - 23/03/22 07:53:32 INFO ResourceUtils: ==============================================================
+[2023-03-22T07:53:32.890+0000] {spark_submit.py:488} INFO - 23/03/22 07:53:32 INFO SparkContext: Submitted application: SparkExample
+[2023-03-22T07:53:32.908+0000] {spark_submit.py:488} INFO - 23/03/22 07:53:32 INFO ResourceProfile: Default ResourceProfile created, executor resources: Map(cores -> name: cores, amount: 1, script: , vendor: , memory -> name: memory, amount: 1024, script: , vendor: , offHeap -> name: offHeap, amount: 0, script: , vendor: ), task resources: Map(cpus -> name: cpus, amount: 1.0)
+[2023-03-22T07:53:32.922+0000] {spark_submit.py:488} INFO - 23/03/22 07:53:32 INFO ResourceProfile: Limiting resource is cpu
+[2023-03-22T07:53:32.923+0000] {spark_submit.py:488} INFO - 23/03/22 07:53:32 INFO ResourceProfileManager: Added ResourceProfile id: 0
+[2023-03-22T07:53:32.960+0000] {spark_submit.py:488} INFO - 23/03/22 07:53:32 INFO SecurityManager: Changing view acls to: default
+[2023-03-22T07:53:32.960+0000] {spark_submit.py:488} INFO - 23/03/22 07:53:32 INFO SecurityManager: Changing modify acls to: default
+[2023-03-22T07:53:32.961+0000] {spark_submit.py:488} INFO - 23/03/22 07:53:32 INFO SecurityManager: Changing view acls groups to:
+[2023-03-22T07:53:32.961+0000] {spark_submit.py:488} INFO - 23/03/22 07:53:32 INFO SecurityManager: Changing modify acls groups to:
+[2023-03-22T07:53:32.961+0000] {spark_submit.py:488} INFO - 23/03/22 07:53:32 INFO SecurityManager: SecurityManager: authentication disabled; ui acls disabled; users  with view permissions: Set(default); groups with view permissions: Set(); users  with modify permissions: Set(default); groups with modify permissions: Set()
+[2023-03-22T07:53:33.122+0000] {spark_submit.py:488} INFO - 23/03/22 07:53:33 INFO Utils: Successfully started service 'sparkDriver' on port 40603.
+[2023-03-22T07:53:33.141+0000] {spark_submit.py:488} INFO - 23/03/22 07:53:33 INFO SparkEnv: Registering MapOutputTracker
+[2023-03-22T07:53:33.165+0000] {spark_submit.py:488} INFO - 23/03/22 07:53:33 INFO SparkEnv: Registering BlockManagerMaster
+[2023-03-22T07:53:33.177+0000] {spark_submit.py:488} INFO - 23/03/22 07:53:33 INFO BlockManagerMasterEndpoint: Using org.apache.spark.storage.DefaultTopologyMapper for getting topology information
+[2023-03-22T07:53:33.178+0000] {spark_submit.py:488} INFO - 23/03/22 07:53:33 INFO BlockManagerMasterEndpoint: BlockManagerMasterEndpoint up
+[2023-03-22T07:53:33.181+0000] {spark_submit.py:488} INFO - 23/03/22 07:53:33 INFO SparkEnv: Registering BlockManagerMasterHeartbeat
+[2023-03-22T07:53:33.195+0000] {spark_submit.py:488} INFO - 23/03/22 07:53:33 INFO DiskBlockManager: Created local directory at /tmp/blockmgr-8828e290-0389-4ccd-bdf0-8c21a7acbb98
+[2023-03-22T07:53:33.207+0000] {spark_submit.py:488} INFO - 23/03/22 07:53:33 INFO MemoryStore: MemoryStore started with capacity 434.4 MiB
+[2023-03-22T07:53:33.220+0000] {spark_submit.py:488} INFO - 23/03/22 07:53:33 INFO SparkEnv: Registering OutputCommitCoordinator
+[2023-03-22T07:53:33.403+0000] {spark_submit.py:488} INFO - 23/03/22 07:53:33 INFO Utils: Successfully started service 'SparkUI' on port 4040.
+[2023-03-22T07:53:33.450+0000] {spark_submit.py:488} INFO - 23/03/22 07:53:33 INFO SparkContext: Added JAR file:/opt/***/plugins/big-data-fundamentals.jar at spark://ed9661b333ec:40603/jars/big-data-fundamentals.jar with timestamp 1679471612759
+[2023-03-22T07:53:33.520+0000] {spark_submit.py:488} INFO - 23/03/22 07:53:33 INFO Executor: Starting executor ID driver on host ed9661b333ec
+[2023-03-22T07:53:33.527+0000] {spark_submit.py:488} INFO - 23/03/22 07:53:33 INFO Executor: Starting executor with user classpath (userClassPathFirst = false): ''
+[2023-03-22T07:53:33.539+0000] {spark_submit.py:488} INFO - 23/03/22 07:53:33 INFO Executor: Fetching spark://ed9661b333ec:40603/jars/big-data-fundamentals.jar with timestamp 1679471612759
+[2023-03-22T07:53:33.585+0000] {spark_submit.py:488} INFO - 23/03/22 07:53:33 INFO TransportClientFactory: Successfully created connection to ed9661b333ec/172.29.0.4:40603 after 22 ms (0 ms spent in bootstraps)
+[2023-03-22T07:53:33.590+0000] {spark_submit.py:488} INFO - 23/03/22 07:53:33 INFO Utils: Fetching spark://ed9661b333ec:40603/jars/big-data-fundamentals.jar to /tmp/spark-d168eb83-e7a1-4077-8dc5-3e0a350f590b/userFiles-e1da8b82-0ab3-4609-9be3-fa51d5f5afe6/fetchFileTemp9950663368608794608.tmp
+[2023-03-22T07:53:33.635+0000] {spark_submit.py:488} INFO - 23/03/22 07:53:33 INFO Executor: Adding file:/tmp/spark-d168eb83-e7a1-4077-8dc5-3e0a350f590b/userFiles-e1da8b82-0ab3-4609-9be3-fa51d5f5afe6/big-data-fundamentals.jar to class loader
+[2023-03-22T07:53:33.641+0000] {spark_submit.py:488} INFO - 23/03/22 07:53:33 INFO Utils: Successfully started service 'org.apache.spark.network.netty.NettyBlockTransferService' on port 36529.
+[2023-03-22T07:53:33.641+0000] {spark_submit.py:488} INFO - 23/03/22 07:53:33 INFO NettyBlockTransferService: Server created on ed9661b333ec:36529
+[2023-03-22T07:53:33.642+0000] {spark_submit.py:488} INFO - 23/03/22 07:53:33 INFO BlockManager: Using org.apache.spark.storage.RandomBlockReplicationPolicy for block replication policy
+[2023-03-22T07:53:33.646+0000] {spark_submit.py:488} INFO - 23/03/22 07:53:33 INFO BlockManagerMaster: Registering BlockManager BlockManagerId(driver, ed9661b333ec, 36529, None)
+[2023-03-22T07:53:33.649+0000] {spark_submit.py:488} INFO - 23/03/22 07:53:33 INFO BlockManagerMasterEndpoint: Registering block manager ed9661b333ec:36529 with 434.4 MiB RAM, BlockManagerId(driver, ed9661b333ec, 36529, None)
+[2023-03-22T07:53:33.650+0000] {spark_submit.py:488} INFO - 23/03/22 07:53:33 INFO BlockManagerMaster: Registered BlockManager BlockManagerId(driver, ed9661b333ec, 36529, None)
+[2023-03-22T07:53:33.651+0000] {spark_submit.py:488} INFO - 23/03/22 07:53:33 INFO BlockManager: Initialized BlockManager: BlockManagerId(driver, ed9661b333ec, 36529, None)
+[2023-03-22T07:53:33.914+0000] {spark_submit.py:488} INFO - 23/03/22 07:53:33 INFO SharedState: Setting hive.metastore.warehouse.dir ('null') to the value of spark.sql.warehouse.dir.
+[2023-03-22T07:53:33.919+0000] {spark_submit.py:488} INFO - 23/03/22 07:53:33 INFO SharedState: Warehouse path is 'file:/opt/***/spark-warehouse'.
+[2023-03-22T07:53:34.497+0000] {spark_submit.py:488} INFO - Exception in thread "main" org.apache.spark.sql.AnalysisException: Path does not exist: file:/opt/***/src/main/resources/data.json
+[2023-03-22T07:53:34.497+0000] {spark_submit.py:488} INFO - at org.apache.spark.sql.errors.QueryCompilationErrors$.dataPathNotExistError(QueryCompilationErrors.scala:1011)
+[2023-03-22T07:53:34.497+0000] {spark_submit.py:488} INFO - at org.apache.spark.sql.execution.datasources.DataSource$.$anonfun$checkAndGlobPathIfNecessary$4(DataSource.scala:785)
+[2023-03-22T07:53:34.497+0000] {spark_submit.py:488} INFO - at org.apache.spark.sql.execution.datasources.DataSource$.$anonfun$checkAndGlobPathIfNecessary$4$adapted(DataSource.scala:782)
+[2023-03-22T07:53:34.497+0000] {spark_submit.py:488} INFO - at org.apache.spark.util.ThreadUtils$.$anonfun$parmap$2(ThreadUtils.scala:372)
+[2023-03-22T07:53:34.497+0000] {spark_submit.py:488} INFO - at scala.concurrent.Future$.$anonfun$apply$1(Future.scala:659)
+[2023-03-22T07:53:34.498+0000] {spark_submit.py:488} INFO - at scala.util.Success.$anonfun$map$1(Try.scala:255)
+[2023-03-22T07:53:34.498+0000] {spark_submit.py:488} INFO - at scala.util.Success.map(Try.scala:213)
+[2023-03-22T07:53:34.498+0000] {spark_submit.py:488} INFO - at scala.concurrent.Future.$anonfun$map$1(Future.scala:292)
+[2023-03-22T07:53:34.498+0000] {spark_submit.py:488} INFO - at scala.concurrent.impl.Promise.liftedTree1$1(Promise.scala:33)
+[2023-03-22T07:53:34.498+0000] {spark_submit.py:488} INFO - at scala.concurrent.impl.Promise.$anonfun$transform$1(Promise.scala:33)
+[2023-03-22T07:53:34.498+0000] {spark_submit.py:488} INFO - at scala.concurrent.impl.CallbackRunnable.run(Promise.scala:64)
+[2023-03-22T07:53:34.498+0000] {spark_submit.py:488} INFO - at java.base/java.util.concurrent.ForkJoinTask$RunnableExecuteAction.exec(ForkJoinTask.java:1426)
+[2023-03-22T07:53:34.498+0000] {spark_submit.py:488} INFO - at java.base/java.util.concurrent.ForkJoinTask.doExec(ForkJoinTask.java:290)
+[2023-03-22T07:53:34.498+0000] {spark_submit.py:488} INFO - at java.base/java.util.concurrent.ForkJoinPool$WorkQueue.topLevelExec(ForkJoinPool.java:1020)
+[2023-03-22T07:53:34.498+0000] {spark_submit.py:488} INFO - at java.base/java.util.concurrent.ForkJoinPool.scan(ForkJoinPool.java:1656)
+[2023-03-22T07:53:34.498+0000] {spark_submit.py:488} INFO - at java.base/java.util.concurrent.ForkJoinPool.runWorker(ForkJoinPool.java:1594)
+[2023-03-22T07:53:34.499+0000] {spark_submit.py:488} INFO - at java.base/java.util.concurrent.ForkJoinWorkerThread.run(ForkJoinWorkerThread.java:183)
+[2023-03-22T07:53:34.500+0000] {spark_submit.py:488} INFO - 23/03/22 07:53:34 INFO SparkContext: Invoking stop() from shutdown hook
+[2023-03-22T07:53:34.507+0000] {spark_submit.py:488} INFO - 23/03/22 07:53:34 INFO SparkUI: Stopped Spark web UI at http://ed9661b333ec:4040
+[2023-03-22T07:53:34.516+0000] {spark_submit.py:488} INFO - 23/03/22 07:53:34 INFO MapOutputTrackerMasterEndpoint: MapOutputTrackerMasterEndpoint stopped!
+[2023-03-22T07:53:34.524+0000] {spark_submit.py:488} INFO - 23/03/22 07:53:34 INFO MemoryStore: MemoryStore cleared
+[2023-03-22T07:53:34.524+0000] {spark_submit.py:488} INFO - 23/03/22 07:53:34 INFO BlockManager: BlockManager stopped
+[2023-03-22T07:53:34.527+0000] {spark_submit.py:488} INFO - 23/03/22 07:53:34 INFO BlockManagerMaster: BlockManagerMaster stopped
+[2023-03-22T07:53:34.530+0000] {spark_submit.py:488} INFO - 23/03/22 07:53:34 INFO OutputCommitCoordinator$OutputCommitCoordinatorEndpoint: OutputCommitCoordinator stopped!
+[2023-03-22T07:53:34.536+0000] {spark_submit.py:488} INFO - 23/03/22 07:53:34 INFO SparkContext: Successfully stopped SparkContext
+[2023-03-22T07:53:34.536+0000] {spark_submit.py:488} INFO - 23/03/22 07:53:34 INFO ShutdownHookManager: Shutdown hook called
+[2023-03-22T07:53:34.536+0000] {spark_submit.py:488} INFO - 23/03/22 07:53:34 INFO ShutdownHookManager: Deleting directory /tmp/spark-d168eb83-e7a1-4077-8dc5-3e0a350f590b
+[2023-03-22T07:53:34.538+0000] {spark_submit.py:488} INFO - 23/03/22 07:53:34 INFO ShutdownHookManager: Deleting directory /tmp/spark-f706ddac-cbed-42d4-af3b-a540db5fb3b5
+[2023-03-22T07:53:34.620+0000] {local_task_job.py:212} INFO - Task exited with return code 0
+[2023-03-22T07:53:34.632+0000] {taskinstance.py:2585} INFO - 0 downstream tasks scheduled from follow-on schedule check

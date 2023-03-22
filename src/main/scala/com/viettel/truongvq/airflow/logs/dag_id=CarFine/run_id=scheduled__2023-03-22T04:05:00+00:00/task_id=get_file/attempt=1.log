@@ -1,0 +1,63 @@
+[2023-03-22T04:10:00.822+0000] {taskinstance.py:1084} INFO - Dependencies all met for dep_context=non-requeueable deps ti=<TaskInstance: CarFine.get_file scheduled__2023-03-22T04:05:00+00:00 [queued]>
+[2023-03-22T04:10:00.828+0000] {taskinstance.py:1084} INFO - Dependencies all met for dep_context=requeueable deps ti=<TaskInstance: CarFine.get_file scheduled__2023-03-22T04:05:00+00:00 [queued]>
+[2023-03-22T04:10:00.828+0000] {taskinstance.py:1282} INFO - 
+--------------------------------------------------------------------------------
+[2023-03-22T04:10:00.828+0000] {taskinstance.py:1283} INFO - Starting attempt 1 of 1
+[2023-03-22T04:10:00.828+0000] {taskinstance.py:1284} INFO - 
+--------------------------------------------------------------------------------
+[2023-03-22T04:10:00.837+0000] {taskinstance.py:1303} INFO - Executing <Task(BashOperator): get_file> on 2023-03-22 04:05:00+00:00
+[2023-03-22T04:10:00.841+0000] {standard_task_runner.py:55} INFO - Started process 984 to run task
+[2023-03-22T04:10:00.842+0000] {standard_task_runner.py:82} INFO - Running: ['***', 'tasks', 'run', 'CarFine', 'get_file', 'scheduled__2023-03-22T04:05:00+00:00', '--job-id', '269', '--raw', '--subdir', 'DAGS_FOLDER/CarFineDAG.py', '--cfg-path', '/tmp/tmp3pyh4fb1']
+[2023-03-22T04:10:00.843+0000] {standard_task_runner.py:83} INFO - Job 269: Subtask get_file
+[2023-03-22T04:10:00.888+0000] {task_command.py:388} INFO - Running <TaskInstance: CarFine.get_file scheduled__2023-03-22T04:05:00+00:00 [running]> on host f331b8a34e72
+[2023-03-22T04:10:00.936+0000] {taskinstance.py:1511} INFO - Exporting the following env vars:
+AIRFLOW_CTX_DAG_OWNER=***
+AIRFLOW_CTX_DAG_ID=CarFine
+AIRFLOW_CTX_TASK_ID=get_file
+AIRFLOW_CTX_EXECUTION_DATE=2023-03-22T04:05:00+00:00
+AIRFLOW_CTX_TRY_NUMBER=1
+AIRFLOW_CTX_DAG_RUN_ID=scheduled__2023-03-22T04:05:00+00:00
+[2023-03-22T04:10:00.937+0000] {subprocess.py:63} INFO - Tmp dir root location: 
+ /tmp
+[2023-03-22T04:10:00.937+0000] {subprocess.py:75} INFO - Running command: ['/bin/bash', '-c', 'wget https://www.dl.dropboxusercontent.com/s/q1de0kkhhxp5vo9/data.json ']
+[2023-03-22T04:10:00.944+0000] {subprocess.py:86} INFO - Output:
+[2023-03-22T04:10:00.949+0000] {subprocess.py:93} INFO - --2023-03-22 04:10:00--  https://www.dl.dropboxusercontent.com/s/q1de0kkhhxp5vo9/data.json
+[2023-03-22T04:10:05.958+0000] {subprocess.py:93} INFO - Resolving www.dl.dropboxusercontent.com (www.dl.dropboxusercontent.com)... 162.125.81.15, 2620:100:6035:15::a27d:550f
+[2023-03-22T04:12:17.113+0000] {subprocess.py:93} INFO - Connecting to www.dl.dropboxusercontent.com (www.dl.dropboxusercontent.com)|162.125.81.15|:443... failed: Connection timed out.
+[2023-03-22T04:12:17.114+0000] {subprocess.py:93} INFO - Connecting to www.dl.dropboxusercontent.com (www.dl.dropboxusercontent.com)|2620:100:6035:15::a27d:550f|:443... failed: Cannot assign requested address.
+[2023-03-22T04:12:17.114+0000] {subprocess.py:93} INFO - Retrying.
+[2023-03-22T04:12:17.114+0000] {subprocess.py:93} INFO - 
+[2023-03-22T04:12:18.114+0000] {subprocess.py:93} INFO - --2023-03-22 04:12:18--  (try: 2)  https://www.dl.dropboxusercontent.com/s/q1de0kkhhxp5vo9/data.json
+[2023-03-22T04:14:28.186+0000] {subprocess.py:93} INFO - Connecting to www.dl.dropboxusercontent.com (www.dl.dropboxusercontent.com)|162.125.81.15|:443... failed: Connection timed out.
+[2023-03-22T04:14:28.187+0000] {subprocess.py:93} INFO - Connecting to www.dl.dropboxusercontent.com (www.dl.dropboxusercontent.com)|2620:100:6035:15::a27d:550f|:443... failed: Cannot assign requested address.
+[2023-03-22T04:14:28.187+0000] {subprocess.py:93} INFO - Retrying.
+[2023-03-22T04:14:28.187+0000] {subprocess.py:93} INFO - 
+[2023-03-22T04:14:30.186+0000] {subprocess.py:93} INFO - --2023-03-22 04:14:30--  (try: 3)  https://www.dl.dropboxusercontent.com/s/q1de0kkhhxp5vo9/data.json
+[2023-03-22T04:16:41.306+0000] {subprocess.py:93} INFO - Connecting to www.dl.dropboxusercontent.com (www.dl.dropboxusercontent.com)|162.125.81.15|:443... failed: Connection timed out.
+[2023-03-22T04:16:41.306+0000] {subprocess.py:93} INFO - Connecting to www.dl.dropboxusercontent.com (www.dl.dropboxusercontent.com)|2620:100:6035:15::a27d:550f|:443... failed: Cannot assign requested address.
+[2023-03-22T04:16:41.306+0000] {subprocess.py:93} INFO - Retrying.
+[2023-03-22T04:16:41.306+0000] {subprocess.py:93} INFO - 
+[2023-03-22T04:16:44.306+0000] {subprocess.py:93} INFO - --2023-03-22 04:16:44--  (try: 4)  https://www.dl.dropboxusercontent.com/s/q1de0kkhhxp5vo9/data.json
+[2023-03-22T04:18:54.426+0000] {subprocess.py:93} INFO - Connecting to www.dl.dropboxusercontent.com (www.dl.dropboxusercontent.com)|162.125.81.15|:443... failed: Connection timed out.
+[2023-03-22T04:18:54.426+0000] {subprocess.py:93} INFO - Connecting to www.dl.dropboxusercontent.com (www.dl.dropboxusercontent.com)|2620:100:6035:15::a27d:550f|:443... failed: Cannot assign requested address.
+[2023-03-22T04:18:54.427+0000] {subprocess.py:93} INFO - Retrying.
+[2023-03-22T04:18:54.427+0000] {subprocess.py:93} INFO - 
+[2023-03-22T04:18:58.426+0000] {subprocess.py:93} INFO - --2023-03-22 04:18:58--  (try: 5)  https://www.dl.dropboxusercontent.com/s/q1de0kkhhxp5vo9/data.json
+[2023-03-22T04:18:58.535+0000] {subprocess.py:93} INFO - Connecting to www.dl.dropboxusercontent.com (www.dl.dropboxusercontent.com)|162.125.81.15|:443... connected.
+[2023-03-22T04:18:59.681+0000] {subprocess.py:93} INFO - HTTP request sent, awaiting response... 200 OK
+[2023-03-22T04:18:59.681+0000] {subprocess.py:93} INFO - Length: 259778 (254K) [text/plain]
+[2023-03-22T04:18:59.681+0000] {subprocess.py:93} INFO - Saving to: ‘data.json’
+[2023-03-22T04:18:59.682+0000] {subprocess.py:93} INFO - 
+[2023-03-22T04:18:59.845+0000] {subprocess.py:93} INFO -      0K .......... .......... .......... .......... .......... 19%  306K 1s
+[2023-03-22T04:18:59.983+0000] {subprocess.py:93} INFO -     50K .......... .......... .......... .......... .......... 39%  362K 0s
+[2023-03-22T04:19:00.005+0000] {subprocess.py:93} INFO -    100K .......... .......... .......... .......... .......... 59% 2.17M 0s
+[2023-03-22T04:19:00.105+0000] {subprocess.py:93} INFO -    150K .......... .......... .......... .......... .......... 78%  501K 0s
+[2023-03-22T04:19:00.130+0000] {subprocess.py:93} INFO -    200K .......... .......... .......... .......... .......... 98% 1.99M 0s
+[2023-03-22T04:19:00.130+0000] {subprocess.py:93} INFO -    250K ...                                                   100% 6.87T=0.4s
+[2023-03-22T04:19:00.131+0000] {subprocess.py:93} INFO - 
+[2023-03-22T04:19:00.131+0000] {subprocess.py:93} INFO - 2023-03-22 04:19:00 (566 KB/s) - ‘data.json’ saved [259778/259778]
+[2023-03-22T04:19:00.132+0000] {subprocess.py:93} INFO - 
+[2023-03-22T04:19:00.132+0000] {subprocess.py:97} INFO - Command exited with return code 0
+[2023-03-22T04:19:00.199+0000] {taskinstance.py:1326} INFO - Marking task as SUCCESS. dag_id=CarFine, task_id=get_file, execution_date=20230322T040500, start_date=20230322T041000, end_date=20230322T041900
+[2023-03-22T04:19:00.254+0000] {local_task_job.py:212} INFO - Task exited with return code 0
+[2023-03-22T04:19:00.280+0000] {taskinstance.py:2585} INFO - 1 downstream tasks scheduled from follow-on schedule check

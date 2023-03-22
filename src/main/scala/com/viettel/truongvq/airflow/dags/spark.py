@@ -17,7 +17,7 @@ with DAG(
         task_id="spark-task",
         conn_id='spark-connection',
         java_class='com.viettel.truongvq.spark.Spark',
-        application='/opt/airflow/dags/big-data-fundamentals.jar',
+        application='/opt/airflow/plugins/big-data-fundamentals.jar',
         verbose=True,)
 
 spark_task
