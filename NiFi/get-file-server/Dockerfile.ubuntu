@@ -1,0 +1,15 @@
+FROM ubuntu:14.04
+
+WORKDIR /app
+
+RUN groupadd -r -g 1001 nonroot && \
+    useradd -r -u 1001 -g 1001 nonroot
+
+COPY --chown=nonroot:nonroot ubuntu-entrypoint.sh ./
+ARG GOSU_URL=https://github.com/tianon/gosu/releases/download/1.12/gosu-amd64
+ADD $GOSU_URL /usr/local/bin/gosu
+
+RUN chmod +x ubuntu-entrypoint.sh && \
+    chmod +x /usr/local/bin/gosu
+
+ENTRYPOINT [ "bash", "ubuntu-entrypoint.sh" ]

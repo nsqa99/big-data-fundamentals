@@ -1,0 +1,19 @@
+FROM node:latest
+
+WORKDIR /app
+
+RUN usermod -m -d /home/nonroot -l nonroot node
+COPY --chown=nonroot:node gosu-entrypoint.sh docker-entrypoint.sh
+ARG GOSU_URL=https://github.com/tianon/gosu/releases/download/1.12/gosu-amd64
+ADD $GOSU_URL /usr/local/bin/gosu
+
+RUN chmod +x docker-entrypoint.sh && \
+    chmod +x /usr/local/bin/gosu
+
+COPY --chown=nonroot:node ["index.js", "package.json", "package-lock.json", "./"]
+
+RUN npm install
+
+ENTRYPOINT [ "bash", "docker-entrypoint.sh" ]
+
+CMD ["npm", "run", "dev"]
