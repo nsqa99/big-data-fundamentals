@@ -7,5 +7,5 @@
 * [Spark concepts](docs/spark.md)
 
 ## Data Ingestion Layer
-* [Apache NiFi](docs/nifi.md)
+* [Apache NiFi](docs/NiFi-final.md)
 * [Apache AirFlow]()
