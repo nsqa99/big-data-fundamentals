@@ -11,19 +11,22 @@ object SparkJob  {
       //    .config("spark.jars.packages", "org.postgresql:postgresql:42.6.0")
       .getOrCreate()
 
+
     val carFine = spark.read.option("multiline", "true")
-      .json("/home/airflow/data.json")
+//      .json("/airflow-data/data.json")
+      .json(spark.conf.get("spark.executorEnv.location"))
 //      .json("src/main/resources/data.json").toDF()
-    val carFineModify = carFine.withColumnRenamed("kindOfVehicle", "vehicle")
+    val carFineModify = carFine.drop("id").withColumnRenamed("kindOfVehicle", "vehicle")
       .withColumnRenamed("teamAddress", "team_address").withColumnRenamed("licensePlate", "license_plate")
 
     carFineModify
       .write.format("jdbc")
+      .mode("append")
       .option("driver", "org.postgresql.Driver")
-      .option("url", "jdbc:postgresql://localhost:5430/postgres")
-      .option("dbtable", "airflow.car_fine")
-      .option("user", "postgres")
-      .option("password", "201075123")
+      .option("url", "jdbc:postgresql://localhost:5432/postgres")
+      .option("dbtable", "car_fine")
+      .option("user", "airflow")
+      .option("password", "airflow")
       .save()
   }
 }
