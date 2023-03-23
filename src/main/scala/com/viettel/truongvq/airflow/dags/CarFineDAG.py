@@ -4,9 +4,11 @@ from airflow.operators.bash import BashOperator
 from airflow.contrib.operators.spark_submit_operator import SparkSubmitOperator
 from airflow.utils.dates import days_ago
 
+default_args = {
+    'owner': 'airflow',}
 
-with DAG(dag_id="CarFine", start_date=days_ago(1), schedule_interval='*/5 * * * *',
-         catchup=False) as dag:
+with DAG(dag_id="CarFine", start_date=days_ago(1), schedule_interval='*/1 * * * *',
+         default_args=default_args, catchup=False) as dag:
 
     downloadTask = BashOperator(
         task_id="get_file",
@@ -15,7 +17,7 @@ with DAG(dag_id="CarFine", start_date=days_ago(1), schedule_interval='*/5 * * * 
 
     showFile = BashOperator(
         task_id="show_file",
-        bash_command="cd /home/truongvq/airflow-data && ls"
+        bash_command='echo "run_id={{ run_id }} | dag_run={{ dag_run }}"',
     )
 
     spark_task = SparkSubmitOperator(

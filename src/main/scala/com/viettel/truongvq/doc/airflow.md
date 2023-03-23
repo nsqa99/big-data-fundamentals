@@ -9,11 +9,22 @@ The main characteristic of Airflow workflows is that all workflows are defined i
 
 - Flexible: Workflow parameterization is built-in leveraging the Jinja templating engine.
 
+# Architecture
+![alt](arch-diag-basic.png)
+- Web Server
+- Scheduler
+- Executor
+- Worker
+- Metadata DB
 # Fundamental Concept
 
-## DAG file (Directed Acyclic Graph)
-A configuration file specifying the DAG structure as code.
-The Python script purpose is to define DAG object
+## DAGs (Directed Acyclic Graph)
+A collection of all the tasks you want to run, organized in a way that reflects their relationships and dependencies.
+The Python script purpose is to define DAG object.
+
+DAGs will run in one of two ways:
+- When they are triggered either manually or via the API
+- On a defined schedule, which is defined as part of the DAG
 
 ```
 from airflow import DAG
@@ -30,6 +41,14 @@ with DAG(dag_id="FirstDAG", start_date=datetime(2023, 3, 20), schedule_interval=
 task
 ```
 
+### Scheduler
+
+## Task
+Task defines a unit of work within a DAG. It is represented as a node in the DAG.
+
+### Task Instances
+### Task Lifecycle
+
 ## Operators
 Using operators helps to visualize task dependencies in our DAG code.
 
@@ -37,8 +56,16 @@ All operators inherit from the BaseOperator, which includes all of the required 
 
 Airflow completes work based on the arguments you pass to your operators.
 
-## Task
-To use an operator in a DAG, you have to instantiate it as a task. Tasks determine how to execute your operator’s work within the context of a DAG.
+### Bash Operator
+### ...
+### Custom Operator
+### Sensor
+### DAG Assignment
+### Bitshift Composition
+### Relation Builder
 
-[//]: # (Notice how we pass a mix of operator specific arguments &#40;bash_command&#41; and an argument common to all operators &#40;retries&#41; inherited from BaseOperator to the operator’s constructor. This is simpler than passing every argument for every constructor call. Also, notice that in the second task we override the retries parameter with 3.)
+## (Optional) Hook, Connection, Pool, Queues
+
+## XComs
+
 
