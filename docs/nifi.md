@@ -169,3 +169,35 @@ NiFi executes within a JVM on a host operating system
 * Fetch files (text, csv...) from FTP, transform and write to HDFS/local disk.
 * Extract data from RDBMS, transform and write to HDFS/local disk.
 * Pull data(JSON, files...) from RestAPI through HTTP, transform and write to HDFS/local disk.
+
+## Notes
+
+* Processor configurations
+  * Concurrent tasks: controls how many threads the Processor will use.
+  * Run Duration: controls how long the Processor should be scheduled to run each time that it is triggered.
+    * If run duration not exceeds, the FlowFiles in the connection queue will continue being loaded into the Processor to be processed by threads.
+      => 1 thread can process more FlowFiles => time to process FlowFiles will be decreased in case of large input.
+    * **Example:**
+      * Processor `GenerateFlowFile`: Input size = 1000, Run scheduled: Time driven = 5s
+      * Processor `LogAttribute`: Concurrent tasks = 4, run scheduled: Time driven = 10s
+        * Run duration = 0ms (Low throughput): FlowFiles remaining in queue: 9996 => only 4 FlowFiles were processed.
+        * Run duration = 2s (High throughput): queue is empty => all FlowFiles were processed.
+
+## Anatomy
+* Processor
+  * 5-Minute Statistics:
+    * In: The amount of data that the Processor has pulled from the queues of its incoming Connections.
+    * Read/Write: The total size of the FlowFile content that the Processor has read from disk and written to disk.
+    * Out: The amount of data that the Processor has transferred to its outbound Connections.
+    * Tasks/Time: The number of times that this Processor has been triggered to run in the past 5 minutes, and the amount of time taken to perform those tasks.
+      Time = the amount of time it would have taken to perform the action if only a single concurrent task were used.
+
+* Process Group
+  * 5-Min Statistics:
+    * Queued: The number of FlowFiles currently enqueued within the Process Group.
+    * In (<count> / <size> -> <ports>): The number of FlowFiles that have been transferred into the Process Group through all of its Input Ports over the past 5 minutes.
+    * Read/Write: The total size of the FlowFile content that the components within the Process Group have read from disk and written to disk.
+    * Out (<ports> → <count> (<size>)): The number of FlowFiles that have been transferred out of the Process Group through its Output Ports over the past 5 minutes.
+  * Component Counts:
+    * Transmitting Ports: The number of Remote Process Group Ports that currently are configured to transmit data to remote instances of NiFi or pull data from remote instances of NiFi.
+    * Non-Transmitting Ports: The number of Remote Process Group Ports that are currently connected to components within this Process Group but currently have their transmission disabled.
