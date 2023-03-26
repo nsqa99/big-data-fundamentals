@@ -2,7 +2,7 @@ package com.viettel.truongvq.spark
 
 import org.apache.spark.sql.SparkSession
 
-object SparkJob  {
+object ReadDataAndInsertDB {
   def main(args: Array[String]): Unit = {
     val spark = SparkSession.builder()
       .master("local[*]")
@@ -13,13 +13,13 @@ object SparkJob  {
 
 
     val carFine = spark.read.option("multiline", "true")
-//      .json("/airflow-data/data.json")
+//            .json("/car-fine-data-short.json")
       .json(spark.conf.get("spark.executorEnv.location"))
-//      .json("src/main/resources/data.json").toDF()
-    val carFineModify = carFine.drop("id").withColumnRenamed("kindOfVehicle", "vehicle")
+
+    val carFineDF = carFine.drop("id").withColumnRenamed("kindOfVehicle", "vehicle")
       .withColumnRenamed("teamAddress", "team_address").withColumnRenamed("licensePlate", "license_plate")
 
-    carFineModify
+    carFineDF
       .write.format("jdbc")
       .mode("append")
       .option("driver", "org.postgresql.Driver")
@@ -28,5 +28,15 @@ object SparkJob  {
       .option("user", "airflow")
       .option("password", "airflow")
       .save()
+
+    val carDF = spark.read.format("jdbc")
+      .option("driver", "org.postgresql.Driver")
+      .option("url", "jdbc:postgresql://localhost:5432/postgres")
+      .option("user", "airflow")
+      .option("password", "airflow")
+      .option("query", "select car.customer, car.phone_number, car.license_plate from car")
+      .load()
+
+    val info = carDF.join(carFineDF, carDF("license_plate") === carFineDF("license_plate")).groupBy("phone_number")
   }
 }
