@@ -10,8 +10,7 @@ Generated Password I+tvuqhiiUcw4RpOpADmyI3sV+Eajvwu
 * A dataflow system based on the concepts of flow-based programming.
 * NiFi was built to automate the flow of data between systems.
 * Term `dataflow` in NiFi's context: the automated and managed flow of information between systems.
-* Problem it solves:
-* Solve the problems occurred when enterprises had more than one system: Some created data and some consumes data.
+* Solves the problems occur when enterprises had more than one system: Some created data and some consumes data.
 * High-level challenges of dataflow:
     * Systems fail.
     * Data access exceeds capacity to consume.
@@ -19,8 +18,7 @@ Generated Password I+tvuqhiiUcw4RpOpADmyI3sV+Eajvwu
       the wrong format.
     * Enabling new flows and changing existing ones must be fast.
     * Vary system properties: Dataflow exists to connect what is essentially a massively distributed system of
-      components
-      that are loosely or not-at-all designed to work together.
+      components that are loosely or not-at-all designed to work together.
     * Compliance and security: System to system and system to user interactions must be secure, trusted, accountable.
     * Continuous improvement occurs in production
 
@@ -36,12 +34,14 @@ Generated Password I+tvuqhiiUcw4RpOpADmyI3sV+Eajvwu
 
 ### FlowFile
 
+* Composed of attributes and contents.
 * Content: the data that is represented by the FlowFile.
-* Attributes: characteristics that provide information or context about the data.
-  Standard attributes:
-    * uuid
-    * filename
-    * path
+* Attributes: characteristics that provide information or context about the data (metadata).
+    * Standard attributes:
+        * uuid
+        * filename
+        * path
+* Provenance: a record of what has happened to the FlowFile
 
 ### Processor
 
@@ -97,12 +97,6 @@ Strategies to distribute data in a flow across the nodes in the cluster
 * A dataflow comprised of many sub-flows that could be reused.
 * A part of dataflow (or entire dataflow) can be extracted as a Template for reusing.
 
-### flow.xml.gz
-
-* NiFi UI canvas is written to one file in realtime called `flow.xml.gz`.
-* Stored in `nifi/conf` by default.
-* NiFi automatically creates a backup copy of this file when it is updated.
-
 ### Controller Service
 
 Shared services that can be used by reporting tasks, processors, and other services to utilize for configuration or task
@@ -128,21 +122,50 @@ NiFi executes within a JVM on a host operating system
 * **Flow Controller:** Provides threads for extensions to run on, manages the schedule of when extensions receive
   resources to execute.
 * **Extensions:** Operate and execute within the JVM
-* **FlowFile repository:** Where NiFi keeps track of the state of what it knows about a given FlowFile that is presently
-  active in the flow.
-    * Pluggable implementation.
+* **FlowFile repository:**
+    * Store FlowFile attributes.
+    * Write-Ahead Log: each change to the FlowFiles is logged in the FlowFile Repository before it happens as a
+      transactional unit of work.
+    * NiFi recovers a FlowFile by restoring a "snapshot" of the FlowFile (created when the Repository is check-pointed),
+      then replaying each of the changes in the log file.
+      A snapshot is taken periodically by the system, default: 2 mins interval.
+    * Two main locations that the FlowFile exists:
+        * Write-Ahead Log (FlowFile Repository).
+        * A hash map in working memory:
+            * Has a reference to all FlowFiles actively being used in the Flow.
+            * Processors reference to FlowFiles objects held in connection queues in memory, referenced by this hash
+              map.
     * Default implementation: persistent Write-Ahead Log located on a specified disk partition.
-* **Content repository:** Where the actual content bytes of a given FlowFile live.
-    * Pluggable implementation.
+    * When a change occurs to the FlowFile, the change is written out to the Write-Ahead Log and the object in memory is
+      modified accordingly.
+    * "Swapping" FlowFiles:
+        * Occurs when the FlowFile in a connection queue exceeds the threshold.
+        * FlowFiles with the lowest priority in the queue will be written to a swap file, then they will be removed by
+          the hash map. The connection queue is in charge of determining when to swap those FlowFiles back into the
+          memory.
+* **Content repository:**
+    * Store FlowFile's content on disk and only read it into JVM when needed.
+    * Made up of a collection of files, which are binned into Containers and Sections, on disk.
+        * A Section is a subdirectory of a Container.
+        * A Container can be thought of as a root directory for the Content Repository.
+        * The Content Repository is made up of many Containers => NiFi can take advantage of multiple physical
+          partitions in parallel.
+    * A dedicated thread in NiFi analyzes the Content repo for un-used contents, then remove or archive them.
     * Default implementation: stores block of data in the file system.
-        * More than one file system storage location can be specified.
-* **Provenance repository:** Where all provenance event data is stored.
-    * Pluggable implementation.
+    * More than one file system storage location can be specified.
+* **Provenance repository:**
+    * Store the history of each FlowFile => provide data lineage.
+    * Each time the FlowFile is created, forked, cloned, modified, etc., a new provenance event is created.
+    * When a provenance event is created, it copies all the FlowFile’s attributes and the pointer to the FlowFile’s
+      content and aggregates that with the FlowFile’s state to one location in the Provenance Repo.
+    * Since Provenance is not copying the content in the Content Repo, and just copying the FlowFile’s pointer to the
+      content, the content could be deleted before the provenance event that references it is deleted
+      => Cannot see the content or replay the FlowFile.
     * Default implementation: Use one or more physical disk volumes. Event data is indexed and searchable.
-
-NiFi is available to operate within a cluster.
+      NiFi is available to operate within a cluster.
 
 ## Case studies
-* Pull files (text, csv...) through FTP, transform and write to HDFS/local disk.
+
+* Fetch files (text, csv...) from FTP, transform and write to HDFS/local disk.
 * Extract data from RDBMS, transform and write to HDFS/local disk.
 * Pull data(JSON, files...) from RestAPI through HTTP, transform and write to HDFS/local disk.
