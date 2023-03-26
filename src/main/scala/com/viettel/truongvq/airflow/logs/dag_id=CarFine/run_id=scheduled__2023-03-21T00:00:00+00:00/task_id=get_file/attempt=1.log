@@ -1,0 +1,34 @@
+[2023-03-22T03:25:54.791+0000] {taskinstance.py:1084} INFO - Dependencies all met for dep_context=non-requeueable deps ti=<TaskInstance: CarFine.get_file scheduled__2023-03-21T00:00:00+00:00 [queued]>
+[2023-03-22T03:25:54.797+0000] {taskinstance.py:1084} INFO - Dependencies all met for dep_context=requeueable deps ti=<TaskInstance: CarFine.get_file scheduled__2023-03-21T00:00:00+00:00 [queued]>
+[2023-03-22T03:25:54.797+0000] {taskinstance.py:1282} INFO - 
+--------------------------------------------------------------------------------
+[2023-03-22T03:25:54.797+0000] {taskinstance.py:1283} INFO - Starting attempt 1 of 1
+[2023-03-22T03:25:54.797+0000] {taskinstance.py:1284} INFO - 
+--------------------------------------------------------------------------------
+[2023-03-22T03:25:54.809+0000] {taskinstance.py:1303} INFO - Executing <Task(BashOperator): get_file> on 2023-03-21 00:00:00+00:00
+[2023-03-22T03:25:54.813+0000] {standard_task_runner.py:55} INFO - Started process 617 to run task
+[2023-03-22T03:25:54.815+0000] {standard_task_runner.py:82} INFO - Running: ['***', 'tasks', 'run', 'CarFine', 'get_file', 'scheduled__2023-03-21T00:00:00+00:00', '--job-id', '264', '--raw', '--subdir', 'DAGS_FOLDER/CarFineDAG.py', '--cfg-path', '/tmp/tmpp6o9n33y']
+[2023-03-22T03:25:54.815+0000] {standard_task_runner.py:83} INFO - Job 264: Subtask get_file
+[2023-03-22T03:25:54.853+0000] {task_command.py:388} INFO - Running <TaskInstance: CarFine.get_file scheduled__2023-03-21T00:00:00+00:00 [running]> on host 5bfd581256a1
+[2023-03-22T03:25:54.900+0000] {taskinstance.py:1511} INFO - Exporting the following env vars:
+AIRFLOW_CTX_DAG_OWNER=***
+AIRFLOW_CTX_DAG_ID=CarFine
+AIRFLOW_CTX_TASK_ID=get_file
+AIRFLOW_CTX_EXECUTION_DATE=2023-03-21T00:00:00+00:00
+AIRFLOW_CTX_TRY_NUMBER=1
+AIRFLOW_CTX_DAG_RUN_ID=scheduled__2023-03-21T00:00:00+00:00
+[2023-03-22T03:25:54.900+0000] {subprocess.py:63} INFO - Tmp dir root location: 
+ /tmp
+[2023-03-22T03:25:54.900+0000] {subprocess.py:75} INFO - Running command: ['/bin/bash', '-c', 'wget https://www.dl.dropboxusercontent.com/s/q1de0kkhhxp5vo9/data.json ']
+[2023-03-22T03:25:54.909+0000] {subprocess.py:86} INFO - Output:
+[2023-03-22T03:25:54.910+0000] {subprocess.py:93} INFO - /bin/bash: line 1: wget: command not found
+[2023-03-22T03:25:54.910+0000] {subprocess.py:97} INFO - Command exited with return code 127
+[2023-03-22T03:25:54.918+0000] {taskinstance.py:1775} ERROR - Task failed with exception
+Traceback (most recent call last):
+  File "/home/airflow/.local/lib/python3.7/site-packages/airflow/operators/bash.py", line 197, in execute
+    f"Bash command failed. The command returned a non-zero exit code {result.exit_code}."
+airflow.exceptions.AirflowException: Bash command failed. The command returned a non-zero exit code 127.
+[2023-03-22T03:25:54.921+0000] {taskinstance.py:1326} INFO - Marking task as FAILED. dag_id=CarFine, task_id=get_file, execution_date=20230321T000000, start_date=20230322T032554, end_date=20230322T032554
+[2023-03-22T03:25:54.930+0000] {standard_task_runner.py:105} ERROR - Failed to execute job 264 for task get_file (Bash command failed. The command returned a non-zero exit code 127.; 617)
+[2023-03-22T03:25:54.946+0000] {local_task_job.py:212} INFO - Task exited with return code 1
+[2023-03-22T03:25:54.965+0000] {taskinstance.py:2585} INFO - 0 downstream tasks scheduled from follow-on schedule check

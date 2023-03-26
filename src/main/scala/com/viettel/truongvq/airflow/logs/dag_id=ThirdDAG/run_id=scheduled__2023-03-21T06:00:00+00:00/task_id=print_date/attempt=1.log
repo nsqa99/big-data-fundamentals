@@ -1,0 +1,28 @@
+[2023-03-21T07:45:30.434+0000] {taskinstance.py:1084} INFO - Dependencies all met for dep_context=non-requeueable deps ti=<TaskInstance: ThirdDAG.print_date scheduled__2023-03-21T06:00:00+00:00 [queued]>
+[2023-03-21T07:45:30.441+0000] {taskinstance.py:1084} INFO - Dependencies all met for dep_context=requeueable deps ti=<TaskInstance: ThirdDAG.print_date scheduled__2023-03-21T06:00:00+00:00 [queued]>
+[2023-03-21T07:45:30.441+0000] {taskinstance.py:1282} INFO - 
+--------------------------------------------------------------------------------
+[2023-03-21T07:45:30.441+0000] {taskinstance.py:1283} INFO - Starting attempt 1 of 1
+[2023-03-21T07:45:30.441+0000] {taskinstance.py:1284} INFO - 
+--------------------------------------------------------------------------------
+[2023-03-21T07:45:30.452+0000] {taskinstance.py:1303} INFO - Executing <Task(BashOperator): print_date> on 2023-03-21 06:00:00+00:00
+[2023-03-21T07:45:30.455+0000] {standard_task_runner.py:55} INFO - Started process 93 to run task
+[2023-03-21T07:45:30.456+0000] {standard_task_runner.py:82} INFO - Running: ['***', 'tasks', 'run', 'ThirdDAG', 'print_date', 'scheduled__2023-03-21T06:00:00+00:00', '--job-id', '6', '--raw', '--subdir', 'DAGS_FOLDER/ThirdDAG.py', '--cfg-path', '/tmp/tmpxr7zi512']
+[2023-03-21T07:45:30.457+0000] {standard_task_runner.py:83} INFO - Job 6: Subtask print_date
+[2023-03-21T07:45:30.496+0000] {task_command.py:388} INFO - Running <TaskInstance: ThirdDAG.print_date scheduled__2023-03-21T06:00:00+00:00 [running]> on host 4b2640dbf4e4
+[2023-03-21T07:45:30.544+0000] {taskinstance.py:1511} INFO - Exporting the following env vars:
+AIRFLOW_CTX_DAG_OWNER=***
+AIRFLOW_CTX_DAG_ID=ThirdDAG
+AIRFLOW_CTX_TASK_ID=print_date
+AIRFLOW_CTX_EXECUTION_DATE=2023-03-21T06:00:00+00:00
+AIRFLOW_CTX_TRY_NUMBER=1
+AIRFLOW_CTX_DAG_RUN_ID=scheduled__2023-03-21T06:00:00+00:00
+[2023-03-21T07:45:30.545+0000] {subprocess.py:63} INFO - Tmp dir root location: 
+ /tmp
+[2023-03-21T07:45:30.545+0000] {subprocess.py:75} INFO - Running command: ['/bin/bash', '-c', 'date']
+[2023-03-21T07:45:30.551+0000] {subprocess.py:86} INFO - Output:
+[2023-03-21T07:45:30.553+0000] {subprocess.py:93} INFO - Tue Mar 21 07:45:30 UTC 2023
+[2023-03-21T07:45:30.553+0000] {subprocess.py:97} INFO - Command exited with return code 0
+[2023-03-21T07:45:30.570+0000] {taskinstance.py:1326} INFO - Marking task as SUCCESS. dag_id=ThirdDAG, task_id=print_date, execution_date=20230321T060000, start_date=20230321T074530, end_date=20230321T074530
+[2023-03-21T07:45:30.588+0000] {local_task_job.py:212} INFO - Task exited with return code 0
+[2023-03-21T07:45:30.600+0000] {taskinstance.py:2585} INFO - 0 downstream tasks scheduled from follow-on schedule check
