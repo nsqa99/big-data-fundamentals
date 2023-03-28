@@ -1,9 +1,10 @@
 # Apache Airflow
-Apache Airflow is an open-source platform for developing, scheduling, and monitoring batch-oriented workflows. he Airflow framework contains operators to connect with many technologies and is easily extensible to connect with a new technology. If your workflows have a clear start and end, and run at regular intervals, they can be programmed as an Airflow DAG.
+Apache Airflow is an open-source platform for developing, scheduling, and monitoring batch-oriented workflows. 
+Airflow’s extensible Python framework enables you to build workflows connecting with virtually any technology. 
+If your workflows have a clear start and end, and run at regular intervals, they can be programmed as an Airflow DAG.
 
-
-The main characteristic of Airflow workflows is that all workflows are defined in Python code. “Workflows as code” serves several purposes:
-
+The main characteristic of Airflow workflows is that all workflows are defined in Python code. 
+“Workflows as code” serves several purposes:
 
 - Dynamic: DAGs are written in Python, allowing for dynamic pipeline creation.
 - Extensible: The Airflow framework contains operators to connect with numerous technologies, easily create your own operators.
@@ -16,7 +17,7 @@ The main characteristic of Airflow workflows is that all workflows are defined i
 - Executor: An executor is a part of scheduler that handles and manages the running tasks
 - Worker: A place where the tasks run
 - Metadata DB: A database that stores workflow states, run duration, logs locations etc. This database also stores information regarding users, roles, connections, variables
-- Dag Directory: A place where we store DAG
+- DAG Directory: A place where we store DAG
 # Fundamental Concept
 
 ## DAGs (Directed Acyclic Graph)
@@ -69,6 +70,13 @@ firstTask = BashOperator(
     task_id="first_task",
     bash_command="echo 1",
 )
+
+secondTask = BashOperator(
+    task_id="second_task",
+    bash_command="echo 2",
+)
+
+firstTask >> secondTask // or firstTask.set_downstream(secondTask) or secondTask.set_upstream(firstTask)
 ```
 
 ### Task Instances
@@ -121,6 +129,19 @@ sensorTask = FileSensor(
 ## XComs
 XComs (short for “cross-communications”) are a mechanism that let Tasks talk to each other
 
+```
+def day_of_month(**kwargs):
+    kwargs["task_instance"].xcom_push("day", datetime.today().day) 
+
+def branch_function(**kwargs):
+    day_of_month = kwargs["task_instance"].xcom_pull(task_ids="get_day_of_month", key="day")
+    print(day_of_month)
+    if day_of_month == 26:
+        return "get_file_and_push_notification"
+    else:
+        return "get_file_and_update_db"
+```
+
 ## Control flow
 By default, a DAG will only run a Task when all the Tasks it depends on are successful. There are several ways of modifying this, however:
 
@@ -134,7 +155,7 @@ By default, a DAG will only run a Task when all the Tasks it depends on are succ
 
 ### Branching
 ```
- branchTask = BranchPythonOperator(
+branchTask = BranchPythonOperator(
     task_id="branch_task",
     python_callable=branch_function,
 )
@@ -191,9 +212,36 @@ latestOnlyTask >> secondTask
 ### Connection
 Airflow’s Connection object is used for storing credentials and other information necessary for connecting to external services.
 
+```
+from airflow import settings
+from airflow.models import Connection
+
+conn = Connection(
+    conn_id="postgres_connection",
+    conn_type="postgres",
+    host="localhost",
+    login="airflow",
+    password="airflow",
+    port=5432
+) 
+session = settings.Session()
+session.add(conn)
+session.commit()
+```
 ### Hook
 A Hook is a high-level interface to an external platform that lets you quickly and easily talk to them without having to write low-level code that hits their API or uses special libraries
 
+```
+sql = "SELECT * FROM car_fine"
+pg_hook = PostgresHook(
+    postgres_conn_id="postgres_connection",
+    schema="postgres"
+)
+pg_conn = pg_hook.get_conn()
+cursor = pg_conn.cursor()
+cursor.execute(sql)
+car_fine = cursor.fetchall()
+```
 
 
 

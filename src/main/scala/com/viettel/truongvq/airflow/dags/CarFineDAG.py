@@ -1,57 +1,68 @@
-from airflow import DAG
-from datetime import datetime
-from airflow.operators.bash import BashOperator
-from airflow.contrib.operators.spark_submit_operator import SparkSubmitOperator
-from airflow.operators.python import BranchPythonOperator
-from airflow.utils.dates import days_ago
-from airflow.operators.python import PythonOperator
-from airflow.contrib.sensors.file_sensor import FileSensor
-from airflow.operators.postgres_operator import PostgresOperator
-from airflow.hooks.postgres_hook import PostgresHook
-from airflow.operators.http_operator import SimpleHttpOperator
-from airflow.models import Variable
-from airflow.utils.task_group import TaskGroup
+from datetime import datetime, timedelta
+
 from SendCarFineNotificationOperator import SendCarFineNotificationOperator
-
-import json
-import requests
-
+from airflow import DAG
+from airflow.contrib.operators.spark_submit_operator import SparkSubmitOperator
+from airflow.contrib.sensors.file_sensor import FileSensor
+from airflow.hooks.postgres_hook import PostgresHook
+from airflow.models import Variable
+from airflow.operators.bash import BashOperator
+from airflow.operators.python import BranchPythonOperator
+from airflow.operators.python import PythonOperator
+from airflow.utils.dates import days_ago
+from airflow.utils.task_group import TaskGroup
+from airflow import settings
+from airflow.models import Connection
 
 
 default_args = {
-    "owner": "airflow",}
+    "owner": "airflow",
+    'retries': 1,
+    'retry_delay': timedelta(seconds=2),
+}
 
-pg_hook = PostgresHook(
-    postgres_conn_id="postgres_connection",
-    schema="postgres"
-)
-
-with DAG(dag_id="CarFine", start_date=days_ago(1), schedule_interval="*/1 * * * *",
+with DAG(dag_id="CarFine", start_date=datetime(2023, 3, 20), schedule_interval="*/1 * * * *", max_active_runs=1,
          default_args=default_args, catchup=False, tags=["truongvq"]) as dag:
 
+    def day_of_month(**kwargs):
+        kwargs["task_instance"].xcom_push("day", datetime.today().day) 
+
     def branch_function(**kwargs):
-        day_of_month = kwargs["ti"].xcom_pull(task_ids="get_day_of_month", key="day")
+        day_of_month = kwargs["task_instance"].xcom_pull(task_ids="get_day_of_month", key="day")
         print(day_of_month)
-        if day_of_month == 26:
+        if day_of_month == 28:
             return "get_file_and_push_notification"
         else:
             return "get_file_and_update_db"
-            
-
-    def day_of_month(**kwargs):
-        kwargs["ti"].xcom_push("day", datetime.today().day) 
+    
 
     def get_car_fine_info(**kwargs):
+        # conn = Connection(
+        #     conn_id="postgres_connection",
+        #     conn_type="postgres",
+        #     host="localhost",
+        #     login="airflow",
+        #     password="airflow",
+        #     port=5432
+        # )
+        # session = settings.Session()
+        # session.add(conn)
+        # session.commit()
+
         sql = "SELECT car.phone_number, car.customer, count(1) AS number_of_car_fine FROM car_fine JOIN car ON car_fine.license_plate = car.license_plate WHERE status = 'Chưa xử phạt' GROUP BY car.phone_number, car.customer"
+        pg_hook = PostgresHook(
+            postgres_conn_id="postgres_connection",
+            schema="postgres"
+        )
         pg_conn = pg_hook.get_conn()
         cursor = pg_conn.cursor()
         cursor.execute(sql)
         car_fine = cursor.fetchall()
         print(car_fine)
-        kwargs["ti"].xcom_push("car_fine", car_fine)
+        kwargs["task_instance"].xcom_push("car_fine", car_fine)
     
     def send_notification(**kwargs):
-        car_fines = kwargs["ti"].xcom_pull(task_ids="get_car_fine_from_db", key="car_fine")        
+        car_fines = kwargs["task_instance"].xcom_pull(task_ids="get_car_fine_from_db", key="car_fine")        
         print(car_fines)
         Variable.set(key="car_fines", value=car_fines, serialize_json=True)
     
@@ -74,6 +85,7 @@ with DAG(dag_id="CarFine", start_date=days_ago(1), schedule_interval="*/1 * * * 
 
     getDateTask = PythonOperator(
         task_id="get_day_of_month",
+        provide_context=True,
         python_callable=day_of_month,
     )
 
@@ -101,7 +113,8 @@ with DAG(dag_id="CarFine", start_date=days_ago(1), schedule_interval="*/1 * * * 
         jars="airflow-data/postgresql-42.6.0.jar",
         trigger_rule="one_success",
         conf={"spark.executorEnv.location":"/home/truongvq/airflow-data/download/car-fine-data-short.json"},
-        verbose=True,)
+        verbose=True,
+    )
     
     deleteFileTask = BashOperator(
         task_id="delete_file",
@@ -111,7 +124,7 @@ with DAG(dag_id="CarFine", start_date=days_ago(1), schedule_interval="*/1 * * * 
     getCarFineTask = PythonOperator(
         task_id="get_car_fine_from_db",
         python_callable=get_car_fine_info,
-        trigger_rule="all_done",
+        trigger_rule="none_skipped",
     )
 
     sendNotificationTask = PythonOperator(
@@ -130,3 +143,5 @@ downloadTask2 >> saveCarFineToDBTask >> deleteFileTask
 [downloadTask2, saveCarFineToDBTask] >> getCarFineTask >> sendNotificationTask
 sendNotificationTask >> sendNotificationTasksGroup >> completeTask
 sensorTask >> deleteFileTask
+
+    
