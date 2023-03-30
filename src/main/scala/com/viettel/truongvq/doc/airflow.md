@@ -11,13 +11,14 @@ The main characteristic of Airflow workflows is that all workflows are defined i
 - Elegant: Airflow DAGs are lean and explicit
 
 # Architecture
-![alt](airflow-architecture.png)
+![alt](arch-diag-basic.png)
 - Scheduler: The scheduler is at the core of Airflow and manages anything and everything related to DAG runs, tasks, the task runs, parsing, and storing DAGs
-- Web Server: This is the UI of Airflow. A user interface where users can view, control and monitor all DAGs. This interface provides functionality to trigger dag or a task manually, clear DAG runs, view task states & logs and view tasks run-duration
 - Executor: An executor is a part of scheduler that handles and manages the running tasks
-- Worker: A place where the tasks run
+- Web Server: This is the UI of Airflow. A user interface where users can view, control and monitor all DAGs. This interface provides functionality to trigger dag or a task manually, clear DAG runs, view task states & logs and view tasks run duration
+- Worker: Pick up tasks that are scheduled for execution and execute them
 - Metadata DB: A database that stores workflow states, run duration, logs locations etc. This database also stores information regarding users, roles, connections, variables
 - DAG Directory: A place where we store DAG
+
 # Fundamental Concept
 
 ## DAGs (Directed Acyclic Graph)
@@ -129,20 +130,8 @@ sensorTask = FileSensor(
 ```
 
 ## XComs
-XComs (short for “cross-communications”) are a mechanism that let Tasks talk to each other
-
-```
-def day_of_month(**kwargs):
-    kwargs["task_instance"].xcom_push("day", datetime.today().day) 
-
-def branch_function(**kwargs):
-    day_of_month = kwargs["task_instance"].xcom_pull(task_ids="get_day_of_month", key="day")
-    print(day_of_month)
-    if day_of_month == 26:
-        return "get_file_and_push_notification"
-    else:
-        return "get_file_and_update_db"
-```
+XComs (short for “cross-communications”) are a mechanism that let Tasks talk to each other.
+We can publish XCom values in our task using the ***xcom_push*** method, which is available on the task instance in the Airflow context. In other task, we will pull that value by using ***xcom_pull*** method
 
 ## Control flow
 By default, a DAG will only run a Task when all the Tasks it depends on are successful. There are several ways of modifying this, however:
@@ -157,15 +146,15 @@ By default, a DAG will only run a Task when all the Tasks it depends on are succ
 
 ### Branching
 ```
-branchTask = BranchPythonOperator(
-    task_id="branch_task",
-    python_callable=branch_function,
+branch_by_day_of_month = BranchPythonOperator(
+    task_id="branch_by_day_of_month",
+    python_callable=branch_by_day_of_month_function,
 )
 
-def branch_function(**kwargs):
-    day_of_month = kwargs["ti"].xcom_pull(task_ids="get_day_of_month", key="day")
+def branch_by_day_of_month_function():
+    day_of_month = datetime.today().day
     print(day_of_month)
-    if day_of_month == 26:
+    if day_of_month == 30:
         return "get_file_and_push_notification"
     else:
         return "get_file_and_update_db"
