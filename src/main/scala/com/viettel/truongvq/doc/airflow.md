@@ -11,7 +11,7 @@ The main characteristic of Airflow workflows is that all workflows are defined i
 - Elegant: Airflow DAGs are lean and explicit
 
 # Architecture
-![alt](arch-diag-basic.png)
+![alt](airflow-architecture.png)
 - Scheduler: The scheduler is at the core of Airflow and manages anything and everything related to DAG runs, tasks, the task runs, parsing, and storing DAGs
 - Web Server: This is the UI of Airflow. A user interface where users can view, control and monitor all DAGs. This interface provides functionality to trigger dag or a task manually, clear DAG runs, view task states & logs and view tasks run-duration
 - Executor: An executor is a part of scheduler that handles and manages the running tasks
@@ -47,6 +47,8 @@ firstTask >> secondTask
 
 ### DAG Runs
 A DAG Run is an object representing an instantiation of the DAG in time. Any time the DAG is executed, a DAG Run is created and all tasks inside it are executed. The status of the DAG Run depends on the tasks states. Each DAG Run is run separately from one another, meaning that you can have many runs of a DAG at the same time
+
+Scheduled DAGs are run after the start date and at the end of period
 
 DAGs will run in one of two ways:
 - When they are triggered either manually or via the API

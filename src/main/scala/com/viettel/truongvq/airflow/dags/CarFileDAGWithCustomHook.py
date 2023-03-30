@@ -1,7 +1,7 @@
 import time
 from datetime import datetime, timedelta
 
-from SendCarFineNotificationOperator import SendCarFineNotificationOperator
+from SendSMSHook import SendSMSHook
 from airflow import DAG
 from airflow.contrib.operators.spark_submit_operator import SparkSubmitOperator
 from airflow.hooks.postgres_hook import PostgresHook
@@ -13,11 +13,11 @@ from airflow.sensors.time_sensor import TimeSensor
 
 default_args = {
     "owner": "airflow",
-    'retries': 1,
-    'retry_delay': timedelta(seconds=2),
+    "retries": 1,
+    "retry_delay": timedelta(seconds=2),
 }
 
-with DAG(dag_id="CarFine", start_date=datetime(2023, 3, 20), schedule_interval="*/1 * * * *", max_active_runs=1,
+with DAG(dag_id="CarFineWithCustomHook", start_date=datetime(2023, 3, 20), schedule_interval="*/1 * * * *", max_active_runs=1,
          default_args=default_args, catchup=False, tags=["truongvq"]) as dag:
 
     def branch_by_day_of_month_function():
@@ -61,6 +61,16 @@ with DAG(dag_id="CarFine", start_date=datetime(2023, 3, 20), schedule_interval="
         print(car_fines)
         print("Send notification to {} user".format(len(car_fines)))
         # time.sleep(15)
+
+    def send_sms(**kwargs):
+        car_fine_info = kwargs.get("car_fine")
+        print(car_fine)
+        send_sms_hook = SendSMSHook(
+            conn_id="send_sms_connection",
+        )
+        print(send_sms_hook)
+        send_sms_hook.get_conn()
+        send_sms_hook.send_car_fine_sms(car_fine_info)
 
     # sensorTask = FileSensor(
     #     task_id="sensor_file",
@@ -126,9 +136,10 @@ with DAG(dag_id="CarFine", start_date=datetime(2023, 3, 20), schedule_interval="
     car_fine_list = Variable.get(key="car_fines", default_var=[('0333151726', 'truongvq', 2), ('03331517261', 'truongvq1', 2), ('03331517262', 'truongvq2', 6)], deserialize_json=True)
     # car_fine_list = [('0333151726', 'truongvq', 2), ('03331517261', 'truongvq1', 2), ('03331517262', 'truongvq2', 6)]
     for car_fine in car_fine_list:
-        task = SendCarFineNotificationOperator(
+        task = PythonOperator(
             task_id="send_notification_to_{}".format(car_fine[0]),
-            car_fine=car_fine,
+            python_callable=send_sms,
+            op_kwargs={"car_fine": car_fine},
         )
         send_notification_task >> task >> complete_task
 
