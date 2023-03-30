@@ -131,7 +131,9 @@ sensorTask = FileSensor(
 
 ## XComs
 XComs (short for “cross-communications”) are a mechanism that let Tasks talk to each other.
-We can publish XCom values in our task using the ***xcom_push*** method, which is available on the task instance in the Airflow context. In other task, we will pull that value by using ***xcom_pull*** method
+When Airflow runs a task, it collects several variables and pass a set of keyword arguments that can be used in your function (it is automatic from Airflow 2.0).
+
+To communicate, we can publish values in our task using the ***xcom_push*** method, which is available on the task instance in the Airflow context. In other task, we will pull that value by using ***xcom_pull*** method
 
 ## Control flow
 By default, a DAG will only run a Task when all the Tasks it depends on are successful. There are several ways of modifying this, however:
