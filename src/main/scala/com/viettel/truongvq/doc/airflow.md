@@ -47,9 +47,11 @@ firstTask >> secondTask
 ![alt](dag-examples.png)
 
 ### DAG Runs
-A DAG Run is an object representing an instantiation of the DAG in time. Any time the DAG is executed, a DAG Run is created and all tasks inside it are executed. The status of the DAG Run depends on the tasks states. Each DAG Run is run separately from one another, meaning that you can have many runs of a DAG at the same time
+A DAG Run is an object representing an instantiation of the DAG in time. 
+Any time the DAG is executed, a DAG Run is created and all tasks inside it are executed. 
+Each DAG Run is run separately from one another, meaning that you can have many runs of a DAG at the same time
 
-Scheduled DAGs are run after the start date and at the end of period
+Scheduled DAGs are run after the start date and at the end of interval
 
 DAGs will run in one of two ways:
 - When they are triggered either manually or via the API
