@@ -1,0 +1,33 @@
+CREATE TABLE presto.flight_data_temp(
+   year int,
+   month int,
+   day_of_week int,
+   dep_time int,
+   crs_dep_time int,
+   arr_time int,
+   crs_arr_time int,
+   unique_carrier varchar,
+   flight_num int,
+   tail_num varchar,
+   actual_elapsed_time int,
+   crs_elapsed_time int,
+   air_time int,
+   arr_delay int,
+   dep_delay int,
+   origin varchar,
+   dest varchar,
+   distance int,
+   taxi_in int,
+   taxi_out int,
+   cancelled int,
+   cancellation_code varchar,
+   diverted int,
+   carrier_delay varchar,
+   weather_delay varchar,
+   nas_delay varchar,
+   security_delay varchar,
+   late_aircraft_delay varchar
+) with (
+    csv_separator = ',',
+  format = 'CSV'
+)
