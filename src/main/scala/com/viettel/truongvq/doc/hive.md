@@ -16,12 +16,43 @@ Hive provides the following features:
 - **CLI**: Run HiveQL queries over command line interface.
 - **Hive Web Interface**: Another way to run HiveQL over web interface.
 - **Driver**: Managing the execution of query and communication between Hive and the Hadoop ecosystem.
-- **Metastor**: Store metadata for Hive tables (like their schema and location) and partitions in a relational database.
+- **Metastore**: Store metadata for Hive tables (like their schema and location) and partitions in a relational database.
+- **Execution Engine**: Convert query into a series of MapReduce (or Tez, Spark) job run in Hadoop.
 
 ## WORKFLOW
-![alt](1-Figure1-1.png)
+![alt](Untitled-drawing-4-3.png)
 
 ## HiveQL
+
+[//]: # (| Type      | Description                        |)
+
+[//]: # (|-----------|------------------------------------|)
+
+[//]: # (| TINYINT   | 1 byte signed integer              |)
+
+[//]: # (| SMALLINT  | 2 byte signed integer              |)
+
+[//]: # (| INT       | 4 byte signed integer              |)
+
+[//]: # (| BIGINT    | 8 byte signed integer              |)
+
+[//]: # (| BOOLEAN   | TRUE or FALSE                      |)
+
+[//]: # (| FLOAT     | Single precision floating point    |)
+
+[//]: # (| DOUBLE    | Double precision floating point    |)
+
+[//]: # (| STRING    | Sequence of characters             |)
+
+[//]: # (| TIMESTAMP | Integer, float, or string          |)
+
+[//]: # (| BINARY    | Sequence of bytes                  |)
+
+[//]: # (| STRUCT    | Like an object                     |)
+
+[//]: # (| MAP       | Collection of key-value            |)
+
+[//]: # (| ARRAY     | Ordered sequences of the same type |)
 
 ### Schema
 
@@ -76,16 +107,16 @@ EXPORT TABLE tablename [PARTITION (part_column="value"[, ...])]
 ```
 ### Queries
 ```
+[WITH CommonTableExpression (, CommonTableExpression)*]    
 SELECT [ALL | DISTINCT] select_expr, select_expr, ...
   FROM table_reference
   [WHERE where_condition]
   [GROUP BY col_list]
   [ORDER BY col_list]
-  [CLUSTER BY col_list
-    | [DISTRIBUTE BY col_list] [SORT BY col_list]
-  ]
  [LIMIT [offset,] rows]
 ```
+
+![alt](hive_function.png)
 
 # PRESTO
 Presto is a distributed SQL query engine designed to query large data sets distributed over one or more heterogeneous data sources.
@@ -98,20 +129,39 @@ Presto provides the following features:
 ## PRESTO CONCEPTS
 - **Coordinator**: Responsible for receiving SQL statements from the users, parsing these statements, planning queries, and managing worker nodes. Client can connect to coordinator via Presto CLI, JDBC, ODBC,...
 - **Worker**: Responsible for executing tasks assigned by the coordinator and for processing data.
-- **Connector**: Responsible for integrating Presto with external data sources. Presto provides a service provider interface (SPI), a type of API used to implement a connector.
+- **Connector**: Responsible for integrating Presto with external data sources. Presto provides a service provider interface (SPI), a type of API used to implement a connector. Every connector should take care of:
+    - Fetch table/view/schema metadata.
+    - Split data into a chunk that Presto will distribute to worker.
+    - Data sources and how to convert the source data to/from the in-memory format expected by the query engine.
 - **Catalog**: Represents a datasource configured connect via a connector.
-- **Schema**: Schemas hold tables, views, and various other objects and are a way to organize tables. Together, the catalog and schema define a set of tables that can be queried.
+- **Schema**: Schemas hold tables, views, and various other objects and are a way to organize tables. Together, the catalog and schema define a set of tables that can be queried. Catalogs contain one or more schemas.
 - **Table**: Set of unordered rows, which are organized into named columns with specific data types.
 - **Statement**: Statement is the text format represent of a SQL statement.
-- **Query**: When we parse a statement, it converts into a query and creates a query plan among Presto workers. A statement is simply passing along the instructions while the query is actually executing it.
-- **Stage**: When executes a query, Presto break it up into a hierarchy stages.
-- **Task**: Stage is implemented as a series of tasks distributed over a network of Presto workers
-- **Split**:
-- **Driver**:
-- **Operator**:
-- **Exchange**:
+- **Query**: When we parse a statement, it converts into a query and creates a query plan among Presto workers. A statement is simply text while a query refers to the configuration and components instantiated to execute that statement.
+- **Stage**: When executes a query, Presto creates a distributed query plan which is a series of hierarchy stages. A stage is represents a portion of a query plan.
+- **Task**: Stage is a series of tasks that run across Presto workers. A task represents a portion of the data that needs to be processed for the stage.
+- **Split**: A split is a chunk of input data that can be retrieved and processed by task. 
+- **Driver**: A driver is a sequence of operator execute in a task and perform the processing data in the split.
+- **Operator**: An operator consumes, transforms and produces data in a task.
 ## ARCHITECTURE AND WORKFLOW
 ![alt](presto-architecture.png)
-
+![alt](query_plan.png)
+![alt](distributed_plan.png)
+![alt](stage_to_task.png)
+![alt](split_task.png)
+![alt](task-driver.png)
 
 ## MANIPULATION
+```
+[ WITH with_query [, ...] ]
+SELECT [ ALL | DISTINCT ] select_expr [, ...]
+[ FROM from_item [, ...] ]
+[ WHERE condition ]
+[ GROUP BY [ ALL | DISTINCT ] grouping_element [, ...] ]
+[ HAVING condition]
+[ { UNION | INTERSECT | EXCEPT } [ ALL | DISTINCT ] select ]
+[ ORDER BY expression [ ASC | DESC ] [, ...] ]
+[ LIMIT [ count | ALL ] ]
+```
+
+![alt](preto_function.png)
