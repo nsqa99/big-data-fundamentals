@@ -204,3 +204,11 @@ JOIN airports a2 ON a2.code = f.dest
 WHERE distance > 1000 and a2.country = 'US'
 GROUP BY a1.name
 
+CREATE EXTERNAL TABLE data_test (
+   id INT,
+   uuid STRING,
+   random_number INT
+)
+STORED AS ORC
+
+

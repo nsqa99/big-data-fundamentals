@@ -17,15 +17,16 @@ object SparkStructureAPI extends App {
 
   val df = spark.read.format("json").schema(customSchema)
     .load("src/main/resources/2015-summary.json")
+  print(df.show(10))
   df.createOrReplaceTempView("tempView")
   print(spark.sql(
     """
-  SELECT DEST_COUNTRY_NAME, sum(count)FROM tempView GROUP BY DEST_COUNTRY_NAME
+  SELECT DEST_COUNTRY_NAME, sum(count) FROM tempView GROUP BY DEST_COUNTRY_NAME
   """)
     .where("DEST_COUNTRY_NAME like 'S%'").where("`sum(count)` > 10")
     .count())
 
   val sparkSchema = spark.read.format("json").load("src/main/resources/2015-summary.json")
-//  print(sparkSchema.first())
+  print(sparkSchema.first())
 
 }
