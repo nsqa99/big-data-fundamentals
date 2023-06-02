@@ -191,7 +191,7 @@ INSERT OVERWRITE TABLE flight_data_by_date PARTITION(month, day)
 
 /home/truongvq/scala/big-data-fundamentals/src/main/scala/com/viettel/truongvq/hive/UpperCaseFistLetterUDF.java
 INSERT OVERWRITE TABLE airports_bucket SELECT * FROM airports;
-LOAD DATA INPATH '/user/truongvq/presto/airports/airports.csv' INTO TABLE presto.airports_bucket;
+LOAD DATA INPATH '/usr/truongvq/cell_measurement.txt' INTO TABLE project_xo_dev.cell_measurements;
 
 ALTER TABLE airports_with_skewed SKEWED BY (country) ON ('US') STORED AS DIRECTORIES;
 
